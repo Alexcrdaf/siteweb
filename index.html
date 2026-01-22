@@ -16,12 +16,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2c3e50">
     
-    <!-- Иконка сайта (генерируется из эмодзи) -->
+    <!-- Иконка сайта -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
 
     <style>
-        /* CSS STYLES */
-        :root {
+        /* ТЕМНАЯ ТЕМА (по умолчанию) */
+        :root.dark-theme {
             --bg-color: #2c3e50;
             --panel-color: #34495e;
             --text-color: #ecf0f1;
@@ -30,12 +30,43 @@
             --peremoga: #2ecc71;
             --zrada: #e74c3c;
             --zadnitsa: #5d4037;
+            --border-color: #7f8c8d;
+            --label-color: #222;
+        }
+
+        /* СВЕТЛАЯ ТЕМА */
+        :root.light-theme {
+            --bg-color: #f5f5f7;
+            --panel-color: #ffffff;
+            --text-color: #1d1d1f;
+            --accent-yellow: #ffd60a;
+            --accent-dark-yellow: #b59e00;
+            --peremoga: #34c759;
+            --zrada: #ff3b30;
+            --zadnitsa: #a0522d;
+            --border-color: #d5d5d7;
+            --label-color: #f5f5f7;
+        }
+
+        /* iOS 26 СТИЛЬ */
+        :root.ios-theme {
+            --bg-color: #000000;
+            --panel-color: #1c1c1e;
+            --text-color: #ffffff;
+            --accent-yellow: #0a84ff;
+            --accent-dark-yellow: #0066cc;
+            --peremoga: #30b0c0;
+            --zrada: #ff453a;
+            --zadnitsa: #a2845c;
+            --border-color: #424245;
+            --label-color: #000000;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -46,6 +77,52 @@
             -webkit-user-select: none;
             overflow: hidden;
             touch-action: manipulation;
+            transition: background-color 0.3s;
+        }
+
+        .header {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background-color: var(--panel-color);
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        .theme-btn:active {
+            transform: scale(0.9);
+        }
+
+        .theme-btn.active {
+            background-color: var(--accent-yellow);
+            color: var(--bg-color);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
         }
 
         .device-container {
@@ -56,10 +133,19 @@
             text-align: center;
             width: 90%; 
             max-width: 400px;
-            border: 3px solid #7f8c8d;
+            border: 3px solid var(--border-color);
             position: relative;
-            transition: transform 0.1s;
+            transition: all 0.3s;
             box-sizing: border-box;
+        }
+
+        .light-theme .device-container {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .ios-theme .device-container {
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
 
         .shaking { animation: shake 0.5s infinite; }
@@ -78,15 +164,19 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 24px;
-            text-shadow: 2px 2px 0px #000;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .light-theme h1 {
+            text-shadow: none;
         }
 
         .subtitle {
             font-size: 11px;
-            color: #bdc3c7;
+            color: var(--text-color);
             margin-bottom: 20px;
             text-transform: uppercase;
-            opacity: 0.7;
+            opacity: 0.6;
             letter-spacing: 1px;
         }
 
@@ -113,7 +203,7 @@
                 var(--zadnitsa) 120deg 180deg 
             );
             box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-            border: 2px solid var(--bg-color);
+            border: 2px solid var(--label-color);
             border-bottom: none;
             box-sizing: border-box;
         }
@@ -137,7 +227,7 @@
         .needle {
             width: 4px;
             height: 90%;
-            background-color: #ecf0f1;
+            background-color: var(--text-color);
             position: absolute;
             bottom: 0;
             left: 50%;
@@ -161,7 +251,7 @@
             transform: translateX(-50%);
             z-index: 11;
             box-shadow: 0 0 5px black;
-            border: 2px solid #7f8c8d;
+            border: 2px solid var(--border-color);
         }
 
         .controls {
@@ -200,6 +290,11 @@
             opacity: 0.7;
         }
 
+        .ios-theme button {
+            border-radius: 18px;
+            padding: 14px 18px;
+        }
+
         #scanBtn { flex-grow: 1; font-size: 18px; }
 
         .sound-btn {
@@ -222,10 +317,14 @@
             line-height: 1.2;
         }
 
+        .light-theme #result-text {
+            text-shadow: none;
+        }
+
         .status-light {
             width: 12px;
             height: 12px;
-            background-color: #222;
+            background-color: var(--label-color);
             border-radius: 50%;
             position: absolute;
             top: 20px;
@@ -240,36 +339,84 @@
         }
 
         @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
+
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tg-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background-color: var(--panel-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tg-link:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .light-theme .tg-link {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
     </style>
 </head>
-<body>
+<body class="dark-theme">
 
-    <div class="device-container" id="device">
-        <div class="status-light" id="led"></div>
-        <h1>ЗРАДА ПРИБОР</h1>
-        <div class="subtitle">Online Scanner v3.0</div>
-        
-        <div class="gauge-wrapper">
-            <div class="gauge">
-                <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
-                <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
-                <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
-                
-                <div class="needle" id="needle"></div>
+    <div class="header">
+        <button class="theme-btn active" id="darkBtn" onclick="setTheme('dark-theme')" title="Темная тема">🌙</button>
+        <button class="theme-btn" id="lightBtn" onclick="setTheme('light-theme')" title="Светлая тема">☀️</button>
+        <button class="theme-btn" id="iosBtn" onclick="setTheme('ios-theme')" title="iOS 26 стиль">🍎</button>
+    </div>
+
+    <div class="main-container">
+        <div class="device-container" id="device">
+            <div class="status-light" id="led"></div>
+            <h1>ЗРАДА ПРИБОР</h1>
+            <div class="subtitle">Online Scanner v4.0</div>
+            
+            <div class="gauge-wrapper">
+                <div class="gauge">
+                    <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
+                    <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
+                    <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
+                    
+                    <div class="needle" id="needle"></div>
+                </div>
+                <div class="needle-center"></div>
             </div>
-            <div class="needle-center"></div>
-        </div>
 
-        <div class="controls">
-            <button class="sound-btn" id="soundBtn" aria-label="Звук" onclick="toggleSound()">🔇</button>
-            <button id="scanBtn" onclick="startAnalysis()">ЗАПУСТИТЬ</button>
-        </div>
+            <div class="controls">
+                <button class="sound-btn" id="soundBtn" aria-label="Звук" onclick="toggleSound()">🔇</button>
+                <button id="scanBtn" onclick="startAnalysis()">ЗАПУСТИТЬ</button>
+            </div>
 
-        <div id="result-text">Готов к работе</div>
+            <div id="result-text">Готов к работе</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="https://t.me/littleguyNEW" target="_blank" rel="noopener noreferrer" class="tg-link">
+            <span>✈️</span>
+            <span>Telegram</span>
+        </a>
     </div>
 
     <script>
-        // Предотвращаем скролл и зум на iOS
         document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 
         const needle = document.getElementById('needle');
@@ -278,12 +425,35 @@
         const device = document.getElementById('device');
         const led = document.getElementById('led');
         const soundBtn = document.getElementById('soundBtn');
+        const darkBtn = document.getElementById('darkBtn');
+        const lightBtn = document.getElementById('lightBtn');
+        const iosBtn = document.getElementById('iosBtn');
 
         let isSoundOn = false;
         let audioCtx = null;
+        let bgMusicGain = null;
+        let bgMusicOsc = null;
+        let currentTheme = 'dark-theme';
 
-        // Unlock AudioContext for iOS Safari
-        function unlockAudio() {
+        function setTheme(theme) {
+            document.documentElement.className = theme;
+            currentTheme = theme;
+            
+            darkBtn.classList.toggle('active', theme === 'dark-theme');
+            lightBtn.classList.toggle('active', theme === 'light-theme');
+            iosBtn.classList.toggle('active', theme === 'ios-theme');
+            
+            localStorage.setItem('zrada-theme', theme);
+        }
+
+        // Загружаем сохраненную тему при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
+            setTheme(savedTheme);
+        });
+
+        // Инициализация AudioContext
+        function initAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
@@ -291,12 +461,24 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-            // Silent buffer to unlock
-            const buffer = audioCtx.createBuffer(1, 1, 22050);
-            const source = audioCtx.createBufferSource();
-            source.buffer = buffer;
-            source.connect(audioCtx.destination);
-            source.start(0);
+        }
+
+        function unlockAudio() {
+            if (!audioCtx) {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                gain.gain.setValueAtTime(0.001, now);
+                osc.frequency.value = 100;
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function toggleSound() {
@@ -304,6 +486,37 @@
             isSoundOn = !isSoundOn;
             soundBtn.innerText = isSoundOn ? "🔊" : "🔇";
             soundBtn.style.backgroundColor = isSoundOn ? "#2ecc71" : "#3498db";
+        }
+
+        function playBackgroundMusic() {
+            if (!isSoundOn || !audioCtx) return;
+
+            if (bgMusicOsc) {
+                bgMusicOsc.stop();
+                bgMusicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+            }
+
+            bgMusicOsc = audioCtx.createOscillator();
+            bgMusicGain = audioCtx.createGain();
+            bgMusicOsc.connect(bgMusicGain);
+            bgMusicGain.connect(audioCtx.destination);
+            bgMusicOsc.type = 'sine';
+            
+            const now = audioCtx.currentTime;
+            bgMusicGain.gain.setValueAtTime(0.08, now);
+            
+            const notes = [220, 247, 277, 294, 330, 370, 415, 440];
+            let time = now;
+            
+            for (let i = 0; i < 12; i++) {
+                const freq = notes[Math.floor(Math.random() * notes.length)];
+                bgMusicOsc.frequency.setTargetAtTime(freq, time, 0.05);
+                time += 0.2;
+            }
+            
+            bgMusicOsc.start(now);
+            bgMusicGain.gain.setTargetAtTime(0, now + 2.4, 0.1);
+            bgMusicOsc.stop(now + 2.5);
         }
 
         function playTone(type) {
@@ -317,11 +530,11 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'square';
-                osc.frequency.setValueAtTime(150 + Math.random() * 50, now);
-                gain.gain.setValueAtTime(0.05, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.frequency.setValueAtTime(200 + Math.random() * 100, now);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 osc.start(now);
-                osc.stop(now + 0.05);
+                osc.stop(now + 0.08);
             } 
             else if (type === 'peremoga') {
                 const playNote = (f, d) => {
@@ -331,15 +544,15 @@
                     g.connect(audioCtx.destination);
                     o.type = 'triangle';
                     o.frequency.value = f;
-                    g.gain.setValueAtTime(0.1, now + d);
-                    g.gain.linearRampToValueAtTime(0, now + d + 0.3);
+                    g.gain.setValueAtTime(0.15, now + d);
+                    g.gain.linearRampToValueAtTime(0, now + d + 0.35);
                     o.start(now + d);
-                    o.stop(now + d + 0.3);
+                    o.stop(now + d + 0.35);
                 };
-                playNote(523.25, 0); // C
-                playNote(659.25, 0.1); // E
-                playNote(783.99, 0.2); // G
-                playNote(1046.50, 0.4); // High C
+                playNote(523.25, 0);
+                playNote(659.25, 0.15);
+                playNote(783.99, 0.3);
+                playNote(1046.50, 0.5);
             } 
             else if (type === 'zrada') {
                 const osc = audioCtx.createOscillator();
@@ -347,13 +560,12 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(600, now);
-                osc.frequency.linearRampToValueAtTime(800, now + 0.2);
-                osc.frequency.linearRampToValueAtTime(600, now + 0.4);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.frequency.setValueAtTime(700, now);
+                osc.frequency.linearRampToValueAtTime(300, now + 0.3);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtValue(0, now + 0.3);
                 osc.start(now);
-                osc.stop(now + 0.4);
+                osc.stop(now + 0.3);
             } 
             else if (type === 'zadnitsa') {
                 const osc = audioCtx.createOscillator();
@@ -361,41 +573,42 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(120, now);
-                osc.frequency.exponentialRampToValueAtTime(40, now + 0.6);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.6);
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.7);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.7);
                 osc.start(now);
-                osc.stop(now + 0.6);
+                osc.stop(now + 0.7);
             }
         }
 
         function startAnalysis() {
-            if (isSoundOn) unlockAudio();
+            unlockAudio();
 
             scanBtn.disabled = true;
             scanBtn.innerText = "⏳...";
             resultText.innerText = "АНАЛИЗ ДАННЫХ";
-            resultText.style.color = "#ecf0f1";
             
             device.classList.add('shaking');
             led.classList.add('active');
             
             needle.style.transition = "none";
+            
+            if (isSoundOn) playBackgroundMusic();
 
             let scanSteps = 0;
-            const maxSteps = 30; // Чуть дольше для саспенса
+            const maxSteps = 35;
 
             const interval = setInterval(() => {
                 const randomAngle = Math.floor(Math.random() * 180) - 90;
                 needle.style.transform = `rotate(${randomAngle}deg)`;
                 
-                if (scanSteps % 4 === 0) playTone('tick');
-                if (navigator.vibrate) navigator.vibrate(5);
+                if (scanSteps % 3 === 0) playTone('tick');
+                if (navigator.vibrate) navigator.vibrate(8);
 
                 scanSteps++;
                 if (scanSteps >= maxSteps) finishAnalysis(interval);
-            }, 70);
+            }, 60);
         }
 
         function finishAnalysis(interval) {
@@ -403,9 +616,13 @@
             device.classList.remove('shaking');
             led.classList.remove('active');
 
+            if (bgMusicOsc) {
+                bgMusicOsc.stop();
+                bgMusicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+            }
+
             const finalAngle = Math.floor(Math.random() * 180) - 90;
-            // Реалистичный отскок стрелки
-            needle.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)"; 
+            needle.style.transition = "transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)"; 
             
             setTimeout(() => {
                 needle.style.transform = `rotate(${finalAngle}deg)`;
@@ -437,11 +654,11 @@
                 resultText.style.color = color;
                 playTone(soundType);
                 
-                if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
                 scanBtn.disabled = false;
                 scanBtn.innerText = "ЗАПУСТИТЬ";
-            }, 600);
+            }, 700);
         }
     </script>
 </body>
