@@ -118,6 +118,33 @@
             box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
         }
 
+        .bg-toggle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background-color: var(--panel-color);
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        .bg-toggle-btn:active {
+            transform: scale(0.9);
+        }
+
+        .bg-toggle-btn.active {
+            background-color: var(--accent-yellow);
+            color: var(--bg-color);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+        }
+
         .main-container {
             display: flex;
             justify-content: center;
@@ -127,16 +154,20 @@
 
         .device-container {
             background-color: var(--panel-color);
-            padding: 20px;
-            border-radius: 20px;
+            padding: 40px;
+            border-radius: 40px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             text-align: center;
-            width: 90%; 
-            max-width: 400px;
-            border: 3px solid var(--border-color);
+            width: 80%; 
+            max-width: 600px;
+            min-width: 300px;
+            border: 8px solid var(--border-color);
             position: relative;
             transition: all 0.3s;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .light-theme .device-container {
@@ -146,6 +177,9 @@
         .ios-theme .device-container {
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            background: rgba(28, 28, 30, 0.4);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .shaking { animation: shake 0.5s infinite; }
@@ -160,10 +194,10 @@
         }
 
         h1 {
-            margin: 5px 0;
+            margin: 0 0 5px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 24px;
+            font-size: 28px;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
         }
 
@@ -185,8 +219,9 @@
             width: 100%;
             height: 0;
             padding-bottom: 50%;
-            margin: 0 auto;
+            margin: 20px auto;
             overflow: hidden;
+            flex: 1;
         }
 
         .gauge {
@@ -255,7 +290,8 @@
         }
 
         .controls {
-            margin-top: 25px;
+            margin-top: 20px;
+            margin-bottom: 0;
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -271,14 +307,18 @@
             color: var(--bg-color);
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s, box-shadow 0.2s;
             box-shadow: 0 4px 0 var(--accent-dark-yellow);
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
+        button:hover {
+            transform: scale(1.05);
+        }
+
         button:active {
-            transform: translateY(4px);
+            transform: translateY(4px) scale(1.05);
             box-shadow: 0 0 0 var(--accent-dark-yellow);
         }
 
@@ -293,6 +333,9 @@
         .ios-theme button {
             border-radius: 18px;
             padding: 14px 18px;
+            background: rgba(52, 152, 219, 0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         #scanBtn { flex-grow: 1; font-size: 18px; }
@@ -301,9 +344,14 @@
             background-color: #3498db;
             box-shadow: 0 4px 0 #2980b9;
             color: white;
-            width: 60px;
-            font-size: 22px;
-            padding: 14px 0;
+            width: 70px;
+            height: 56px;
+            font-size: 24px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
         .sound-btn:active { box-shadow: 0 0 0 #2980b9; }
 
@@ -386,8 +434,8 @@
     <div class="main-container">
         <div class="device-container" id="device">
             <div class="status-light" id="led"></div>
-            <h1>ЗРАДА ПРИБОР</h1>
-            <div class="subtitle">Online Scanner v4.0</div>
+            <h1>ZРАДА PRIBOR</h1>
+            <div class="subtitle"></div>
             
             <div class="gauge-wrapper">
                 <div class="gauge">
@@ -434,6 +482,9 @@
         let bgMusicGain = null;
         let bgMusicOsc = null;
         let currentTheme = 'dark-theme';
+        let ambientMusicEnabled = true;
+        let ambientOsc = null;
+        let ambientGain = null;
 
         function setTheme(theme) {
             document.documentElement.className = theme;
@@ -443,13 +494,54 @@
             lightBtn.classList.toggle('active', theme === 'light-theme');
             iosBtn.classList.toggle('active', theme === 'ios-theme');
             
+            // Обновляем фон при смене темы
+            if (bgEnabled) {
+                toggleBackground();
+                toggleBackground();
+            }
+            
             localStorage.setItem('zrada-theme', theme);
         }
 
-        // Загружаем сохраненную тему при загрузке страницы
+        function toggleBackground() {
+            const bgToggle = document.getElementById('bgToggle');
+            bgEnabled = !bgEnabled;
+            
+            if (bgEnabled) {
+                const gradients = {
+                    'dark-theme': 'linear-gradient(135deg, #0f0f1e 0%, #1a1a3e 50%, #16213e 100%)',
+                    'light-theme': 'linear-gradient(135deg, #f5f5f7 0%, #e8e8eb 50%, #d9d9dd 100%)',
+                    'ios-theme': 'linear-gradient(135deg, #000000 0%, #0a0e27 50%, #1a1a2e 100%)'
+                };
+                document.body.style.background = gradients[currentTheme];
+                document.body.style.backgroundSize = '400% 400%';
+                document.body.style.animation = 'gradientShift 15s ease infinite';
+                bgToggle.classList.add('active');
+            } else {
+                const colors = {
+                    'dark-theme': '#0f0f1e',
+                    'light-theme': '#f5f5f7',
+                    'ios-theme': '#000000'
+                };
+                document.body.style.background = colors[currentTheme];
+                document.body.style.animation = 'none';
+                bgToggle.classList.remove('active');
+            }
+            
+            localStorage.setItem('zrada-bg', bgEnabled);
+        }
+
+        // Загружаем сохраненные настройки при загрузке страницы
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
+            const savedBg = localStorage.getItem('zrada-bg') !== 'false';
+            
             setTheme(savedTheme);
+            
+            if (!savedBg) {
+                bgEnabled = true;
+                toggleBackground();
+            }
         });
 
         // Инициализация AudioContext
@@ -563,7 +655,7 @@
                 osc.frequency.setValueAtTime(700, now);
                 osc.frequency.linearRampToValueAtTime(300, now + 0.3);
                 gain.gain.setValueAtTime(0.15, now);
-                gain.gain.linearRampToValueAtValue(0, now + 0.3);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
                 osc.start(now);
                 osc.stop(now + 0.3);
             } 
@@ -637,15 +729,15 @@
                 let soundType = "";
 
                 if (angle <= -30) {
-                    text = "ЕСТЬ ПЕРЕМОГА! 😎";
+                    text = "ЕСТЬ ПЕРЕМОГА! 🎉😎🚀";
                     color = "#2ecc71";
                     soundType = "peremoga";
                 } else if (angle > -30 && angle < 30) {
-                    text = "УВЫ, ЗРАДА! 🤬";
+                    text = "ZРАДА!!!! 😱💥🔥";
                     color = "#e74c3c";
                     soundType = "zrada";
                 } else {
-                    text = "ПОЛНАЯ ЗАДНИЦА 🍑";
+                    text = "ПОЛНАЯ ЗАДНИЦА 🍑😩💀";
                     color = "#d35400";
                     soundType = "zadnitsa";
                 }
@@ -660,6 +752,20 @@
                 scanBtn.innerText = "ЗАПУСТИТЬ";
             }, 700);
         }
+
+        // Загружаем сохраненные настройки при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
+            const savedAmbient = localStorage.getItem('zrada-ambient') !== 'false';
+            
+            setTheme(savedTheme);
+            
+            if (savedAmbient) {
+                ambientMusicEnabled = true;
+                document.getElementById('musicToggle').classList.add('active');
+                startAmbientMusic();
+            }
+        });
     </script>
 </body>
 </html>
