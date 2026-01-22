@@ -1,180 +1,433 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Зрада Прибор PRO+</title>
-    <style>
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: #1a252f;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; height: 100dvh; margin: 0; color: white;
-            user-select: none; -webkit-user-select: none; touch-action: none;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Зрада Прибор Mobile</title>
+    <style>
+        /* Базовые настройки для iOS */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* dvh - динамическая высота, учитывающая адресную строку Safari */
+            min-height: 100vh;
+            height: 100dvh;
+            margin: 0;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none; /* Safari */
+            overflow: hidden;
+            touch-action: manipulation; /* Убирает задержку тапа */
+        }
 
-        .device-container {
-            background-color: #34495e; padding: 25px; border-radius: 30px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.8);
-            text-align: center; width: 85%; max-width: 380px;
-            border: 4px solid #7f8c8d; position: relative;
-        }
+        .device-container {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            text-align: center;
+            /* Адаптивная ширина */
+            width: 90%;
+            max-width: 380px;
+            border: 3px solid #7f8c8d;
+            position: relative;
+            transition: transform 0.1s;
+        }
 
-        h1 { margin: 0; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; }
+        /* Анимация тряски */
+        .shaking { animation: shake 0.5s infinite; }
 
-        /* Шкала с делениями */
-        .gauge-wrapper {
-            position: relative; width: 100%; height: 0; padding-bottom: 55%; margin: 30px auto;
-        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-2px, 0px) rotate(1deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            60% { transform: translate(-2px, 1px) rotate(0deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
 
-        .gauge {
-            width: 100%; height: 100%; position: absolute;
-            border-radius: 500px 500px 0 0;
-            background: conic-gradient(
-                from 270deg at 50% 100%,
-                #2ecc71 0deg 60deg,
-                #f1c40f 60deg 90deg,
-                #e74c3c 90deg 140deg,
-                #5d4037 140deg 180deg
-            );
-            border: 3px solid #2c3e50; border-bottom: none;
-        }
+        h1 {
+            margin: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 22px;
+            text-shadow: 2px 2px 0px #000;
+        }
 
-        /* Текстовые метки на шкале */
-        .scale-label {
-            position: absolute; font-size: 10px; font-weight: bold; text-shadow: 1px 1px 2px black;
-        }
-        .l-peremoga { bottom: 10px; left: 10px; }
-        .l-zrada { top: 15px; left: 50%; transform: translateX(-50%); }
-        .l-zad { bottom: 10px; right: 10px; }
+        .subtitle {
+            font-size: 11px;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
 
-        .needle {
-            width: 4px; height: 95%; background: #e74c3c;
-            position: absolute; bottom: 0; left: 50%; margin-left: -2px;
-            transform-origin: bottom center; z-index: 10;
-            border-radius: 4px; transition: transform 0.1s linear;
-        }
+        /* Адаптивный прибор */
+        .gauge-wrapper {
+            position: relative;
+            width: 100%; /* Резина */
+            height: 0;
+            padding-bottom: 50%; /* Соотношение сторон 2:1 */
+            margin: 0 auto;
+            overflow: hidden;
+        }
 
-        #result-text {
-            height: 60px; margin-top: 15px; font-size: 20px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .gauge {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 500px 500px 0 0; /* Большой радиус для полукруга */
+            background: conic-gradient(
+                from 270deg at 50% 100%,
+                #2ecc71 0deg 60deg,
+                #e74c3c 60deg 120deg,
+                #5d4037 120deg 180deg
+            );
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            border: 2px solid #2c3e50;
+            border-bottom: none;
+            box-sizing: border-box;
+        }
 
-        .controls { display: flex; gap: 10px; margin-top: 10px; }
-        button {
-            border: none; border-radius: 15px; font-weight: bold;
-            cursor: pointer; transition: all 0.1s; -webkit-tap-highlight-color: transparent;
-        }
-        #scanBtn {
-            flex-grow: 1; padding: 18px; background: #f1c40f; color: #2c3e50; font-size: 18px;
-            box-shadow: 0 4px 0 #b7950b;
-        }
-        .sound-btn { width: 60px; background: #3498db; color: white; font-size: 20px; }
-        button:active { transform: translateY(4px); box-shadow: none; }
+        .label {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+        /* Медиа-запросы для маленьких экранов (iPhone SE) */
+        @media (max-width: 360px) {
+            .label { font-size: 10px; }
+            h1 { font-size: 18px; }
+        }
 
-        .particle { position: fixed; pointer-events: none; border-radius: 50%; z-index: 100; }
-    </style>
+        .label-peremoga { bottom: 8px; left: 15px; color: #fff; }
+        .label-zrada { top: 15px; left: 50%; transform: translateX(-50%); color: #fff; }
+        .label-zadnitsa { bottom: 8px; right: 15px; color: #fff; }
+
+        .emoji { font-size: 18px; display: block; text-align: center; margin-bottom: 2px; }
+
+        /* Стрелка */
+        .needle {
+            width: 4px;
+            height: 90%; /* Относительно высоты gauge */
+            background-color: #ecf0f1;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            transform-origin: bottom center;
+            transform: rotate(0deg);
+            z-index: 10;
+            border-radius: 50% 50% 0 0;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .needle-center {
+            width: 20px;
+            height: 20px;
+            background-color: #95a5a6;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 11;
+            box-shadow: 0 0 5px black;
+            border: 2px solid #7f8c8d;
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            background-color: #f1c40f;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 0 #b7950b;
+            -webkit-tap-highlight-color: transparent; /* Убирает серый фон при тапе на iOS */
+            outline: none;
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #b7950b;
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: translateY(4px);
+            opacity: 0.7;
+        }
+
+        #scanBtn {
+            flex-grow: 1;
+            font-size: 18px;
+        }
+
+        .sound-btn {
+            background-color: #3498db;
+            box-shadow: 0 4px 0 #2980b9;
+            color: white;
+            width: 60px;
+            font-size: 20px;
+        }
+        .sound-btn:active { box-shadow: 0 0 0 #2980b9; }
+
+        #result-text {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            min-height: 1.5em;
+            color: #ecf0f1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+
+        .status-light {
+            width: 12px;
+            height: 12px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .status-light.active {
+            background-color: #e74c3c;
+            box-shadow: 0 0 8px #e74c3c;
+            animation: blink 0.15s infinite alternate;
+        }
+
+        @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
+
+    </style>
 </head>
 <body>
 
-    <div class="device-container" id="device">
-        <h1>ЗРАДА ПРИБОР PRO</h1>
-        
-        <div class="gauge-wrapper">
-            <div class="gauge">
-                <span class="scale-label l-peremoga">ПЕРЕМОГА</span>
-                <span class="scale-label l-zrada">ЗРАДА</span>
-                <span class="scale-label l-zad">ЗАДНИЦА</span>
-                <div class="needle" id="needle"></div>
-            </div>
-            <div style="width:20px; height:20px; background:#bdc3c7; border-radius:50%; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); z-index:11; border:2px solid #2c3e50;"></div>
-        </div>
+    <div class="device-container" id="device">
+        <div class="status-light" id="led"></div>
+        <h1>ЗРАДА ПРИБОР</h1>
+        <div class="subtitle">Mobile Edition v2.1</div>
 
-        <div id="result-text">НАЖМИ СКАН</div>
+        <div class="gauge-wrapper">
+            <div class="gauge">
+                <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
+                <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
+                <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
 
-        <div class="controls">
-            <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔇</button>
-            <button id="scanBtn" onclick="startAnalysis()">СКАН</button>
-        </div>
-    </div>
+                <div class="needle" id="needle"></div>
+            </div>
+            <div class="needle-center"></div>
+        </div>
 
-    <script>
-        // СПИСКИ ФРАЗ ДЛЯ РЕЗУЛЬТАТОВ
-        const phrases = {
-            peremoga: ["ЧИСТАЯ ПЕРЕМОГА! 🦅", "МОЩНЫЙ ФЛЕКС! 😎", "ВСЁ ИДЁТ ПО ПЛАНУ ✅", "ГЕНИАЛЬНО! 🔥"],
-            zrada: ["ЛЮТАЯ ЗРАДА! 😱", "ТИКАЙ С ГОРОДУ! 🏃‍♂️", "ЭТО ПОДСТАВА! 🧨", "НУ КАК ТАК-ТО? 🤬"],
-            zadnitsa: ["ПОЛНАЯ ЗАДНИЦА 🍑", "ПРИЕХАЛИ... ⚓", "ГРОБ КЛАДБИЩЕ ⚰️", "ВЫХОДА НЕТ 🛑"],
-            neutral: ["НУ ТАКОЕ... 😐", "50 на 50 ⚖️", "НИ РЫБА НИ МЯСО 🐟"]
-        };
+        <div class="controls">
+            <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔇</button>
+            <button id="scanBtn" onclick="startAnalysis()">СКАН</button>
+        </div>
 
-        const needle = document.getElementById('needle');
-        const resultText = document.getElementById('result-text');
-        const scanBtn = document.getElementById('scanBtn');
-        let isSoundOn = false;
-        let audioCtx = null;
+        <div id="result-text">Готов к работе</div>
+    </div>
 
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
+    <script>
+        // Предотвращаем скролл и зум на iOS при двойном тапе
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
 
-        function toggleSound() {
-            initAudio();
-            isSoundOn = !isSoundOn;
-            document.getElementById('soundBtn').innerText = isSoundOn ? "🔊" : "🔇";
-        }
+        const needle = document.getElementById('needle');
+        const resultText = document.getElementById('result-text');
+        const scanBtn = document.getElementById('scanBtn');
+        const device = document.getElementById('device');
+        const led = document.getElementById('led');
+        const soundBtn = document.getElementById('soundBtn');
 
-        function playTone(f, d) {
-            if (!isSoundOn || !audioCtx) return;
-            const o = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            o.frequency.value = f;
-            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
-            o.connect(g); g.connect(audioCtx.destination);
-            o.start(); o.stop(audioCtx.currentTime + d);
-        }
+        let isSoundOn = false;
+        let audioCtx = null;
 
-        function startAnalysis() {
-            initAudio();
-            scanBtn.disabled = true;
-            resultText.innerText = "АНАЛИЗИРУЮ...";
-            
-            let steps = 0;
-            const interval = setInterval(() => {
-                const rnd = Math.random() * 180 - 90;
-                needle.style.transform = `rotate(${rnd}deg)`;
-                playTone(200 + Math.random() * 500, 0.05);
-                steps++;
-                if (steps > 25) {
-                    clearInterval(interval);
-                    showFinalResult();
-                }
-            }, 80);
-        }
+        // "Разогрев" аудио-контекста для iOS
+        function unlockAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            // Проигрываем тишину, чтобы Safari понял, что мы хотим играть звук
+            const buffer = audioCtx.createBuffer(1, 1, 22050);
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioCtx.destination);
+            source.start(0);
+        }
 
-        function showFinalResult() {
-            const angle = Math.floor(Math.random() * 180) - 90;
-            needle.style.transition = "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-            needle.style.transform = `rotate(${angle}deg)`;
+        function toggleSound() {
+            unlockAudio();
+            isSoundOn = !isSoundOn;
+            soundBtn.innerText = isSoundOn ? "🔊" : "🔇";
+            soundBtn.style.backgroundColor = isSoundOn ? "#2ecc71" : "#3498db";
+        }
 
-            setTimeout(() => {
-                let category, color;
-                
-                if (angle < -40) { category = 'peremoga'; color = '#2ecc71'; }
-                else if (angle < 15) { category = 'neutral'; color = '#f1c40f'; }
-                else if (angle < 60) { category = 'zrada'; color = '#e74c3c'; }
-                else { category = 'zadnitsa'; color = '#d35400'; }
+        function playTone(type) {
+            if (!isSoundOn || !audioCtx) return;
 
-                const list = phrases[category];
-                resultText.innerText = list[Math.floor(Math.random() * list.length)];
-                resultText.style.color = color;
-                
-                playTone(angle < 0 ? 600 : 150, 0.5);
-                scanBtn.disabled = false;
-                needle.style.transition = "transform 0.1s linear";
-            }, 800);
-        }
-    </script>
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'tick') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(150 + Math.random() * 50, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+            else if (type === 'peremoga') {
+                // Аккорд C-Major
+                const playNote = (f, d) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'triangle';
+                    o.frequency.value = f;
+                    g.gain.setValueAtTime(0.1, now + d);
+                    g.gain.linearRampToValueAtTime(0, now + d + 0.3);
+                    o.start(now + d);
+                    o.stop(now + d + 0.3);
+                };
+                playNote(523.25, 0);
+                playNote(659.25, 0.1);
+                playNote(783.99, 0.2);
+            }
+            else if (type === 'zrada') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.linearRampToValueAtTime(800, now + 0.2);
+                osc.frequency.linearRampToValueAtTime(600, now + 0.4);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+            else if (type === 'zadnitsa') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.5);
+                osc.start(now);
+                osc.stop(now + 0.5);
+            }
+        }
+
+        function startAnalysis() {
+            // Обязательно пытаемся разблокировать аудио при нажатии на старт
+            if (isSoundOn) unlockAudio();
+
+            scanBtn.disabled = true;
+            scanBtn.innerText = "⏳...";
+            resultText.innerText = "АНАЛИЗ ДАННЫХ";
+            resultText.style.color = "#ecf0f1";
+
+            device.classList.add('shaking');
+            led.classList.add('active');
+
+            needle.style.transition = "none";
+
+            let scanSteps = 0;
+            const maxSteps = 25;
+
+            const interval = setInterval(() => {
+                const randomAngle = Math.floor(Math.random() * 180) - 90;
+                needle.style.transform = `rotate(${randomAngle}deg)`;
+
+                if (scanSteps % 3 === 0) playTone('tick');
+
+                // Легкая вибрация для Android (iOS игнорирует, но не ломается)
+                if (navigator.vibrate) navigator.vibrate(5);
+
+                scanSteps++;
+
+                if (scanSteps >= maxSteps) {
+                    finishAnalysis(interval);
+                }
+            }, 80);
+        }
+
+        function finishAnalysis(interval) {
+            clearInterval(interval);
+            device.classList.remove('shaking');
+            led.classList.remove('active');
+
+            const finalAngle = Math.floor(Math.random() * 180) - 90;
+            needle.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)"; // Эффект отскока
+
+            setTimeout(() => {
+                needle.style.transform = `rotate(${finalAngle}deg)`;
+                showResult(finalAngle);
+            }, 50);
+        }
+
+        function showResult(angle) {
+            setTimeout(() => {
+                let text = "";
+                let color = "";
+                let soundType = "";
+
+                if (angle <= -30) {
+                    text = "ЕСТЬ ПЕРЕМОГА! 😎";
+                    color = "#2ecc71";
+                    soundType = "peremoga";
+                } else if (angle > -30 && angle < 30) {
+                    text = "ЗРАДА! 🤬";
+                    color = "#e74c3c";
+                    soundType = "zrada";
+                } else {
+                    text = "ПОЛНАЯ ЗАДНИЦА 🍑";
+                    color = "#d35400";
+                    soundType = "zadnitsa";
+                }
+
+                resultText.innerText = text;
+                resultText.style.color = color;
+                playTone(soundType);
+
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                scanBtn.disabled = false;
+                scanBtn.innerText = "СКАН";
+            }, 500);
+        }
+    </script>
 </body>
 </html>
