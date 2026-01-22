@@ -3,44 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- SEO и Соцсети -->
+    <title>Зрада Прибор | Онлайн Анализатор</title>
+    <meta name="description" content="Узнай судьбу: Перемога, Зрада или Тотальная Задница? Мем-анализатор ситуации.">
+    <meta property="og:title" content="Зрада Прибор Онлайн">
+    <meta property="og:description" content="Генератор случайных прогнозов. Проверь свой уровень удачи прямо сейчас.">
+    <meta property="og:type" content="website">
+    
+    <!-- Настройки для мобилок (iOS/Android) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2c3e50">
-    <title>Зрада Прибор Mobile</title>
+    
+    <!-- Иконка сайта (генерируется из эмодзи) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+
     <style>
-        /* Базовые настройки для iOS */
+        /* CSS STYLES */
+        :root {
+            --bg-color: #2c3e50;
+            --panel-color: #34495e;
+            --text-color: #ecf0f1;
+            --accent-yellow: #f1c40f;
+            --accent-dark-yellow: #b7950b;
+            --peremoga: #2ecc71;
+            --zrada: #e74c3c;
+            --zadnitsa: #5d4037;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #2c3e50;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            /* dvh - динамическая высота, учитывающая адресную строку Safari */
             min-height: 100vh;
-            height: 100dvh;
+            height: 100dvh; 
             margin: 0;
-            color: white;
+            color: var(--text-color);
             user-select: none;
-            -webkit-user-select: none; /* Safari */
+            -webkit-user-select: none;
             overflow: hidden;
-            touch-action: manipulation; /* Убирает задержку тапа */
+            touch-action: manipulation;
         }
 
         .device-container {
-            background-color: #34495e;
+            background-color: var(--panel-color);
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             text-align: center;
-            /* Адаптивная ширина */
-            width: 90%;
-            max-width: 380px;
+            width: 90%; 
+            max-width: 400px;
             border: 3px solid #7f8c8d;
             position: relative;
             transition: transform 0.1s;
+            box-sizing: border-box;
         }
 
-        /* Анимация тряски */
         .shaking { animation: shake 0.5s infinite; }
 
         @keyframes shake {
@@ -56,24 +77,24 @@
             margin: 5px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 22px;
+            font-size: 24px;
             text-shadow: 2px 2px 0px #000;
         }
 
         .subtitle {
             font-size: 11px;
             color: #bdc3c7;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             opacity: 0.7;
+            letter-spacing: 1px;
         }
 
-        /* Адаптивный прибор */
         .gauge-wrapper {
             position: relative;
-            width: 100%; /* Резина */
+            width: 100%;
             height: 0;
-            padding-bottom: 50%; /* Соотношение сторон 2:1 */
+            padding-bottom: 50%;
             margin: 0 auto;
             overflow: hidden;
         }
@@ -84,15 +105,15 @@
             position: absolute;
             top: 0;
             left: 0;
-            border-radius: 500px 500px 0 0; /* Большой радиус для полукруга */
+            border-radius: 500px 500px 0 0;
             background: conic-gradient(
-                from 270deg at 50% 100%,
-                #2ecc71 0deg 60deg,
-                #e74c3c 60deg 120deg,
-                #5d4037 120deg 180deg
+                from 270deg at 50% 100%, 
+                var(--peremoga) 0deg 60deg,  
+                var(--zrada) 60deg 120deg, 
+                var(--zadnitsa) 120deg 180deg 
             );
             box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-            border: 2px solid #2c3e50;
+            border: 2px solid var(--bg-color);
             border-bottom: none;
             box-sizing: border-box;
         }
@@ -105,32 +126,28 @@
             z-index: 2;
             text-transform: uppercase;
         }
-        /* Медиа-запросы для маленьких экранов (iPhone SE) */
-        @media (max-width: 360px) {
-            .label { font-size: 10px; }
-            h1 { font-size: 18px; }
-        }
+        @media (max-width: 360px) { .label { font-size: 10px; } }
 
-        .label-peremoga { bottom: 8px; left: 15px; color: #fff; }
-        .label-zrada { top: 15px; left: 50%; transform: translateX(-50%); color: #fff; }
-        .label-zadnitsa { bottom: 8px; right: 15px; color: #fff; }
+        .label-peremoga { bottom: 10%; left: 5%; color: #fff; }
+        .label-zrada { top: 15%; left: 50%; transform: translateX(-50%); color: #fff; }
+        .label-zadnitsa { bottom: 10%; right: 5%; color: #fff; }
 
         .emoji { font-size: 18px; display: block; text-align: center; margin-bottom: 2px; }
 
-        /* Стрелка */
         .needle {
             width: 4px;
-            height: 90%; /* Относительно высоты gauge */
+            height: 90%;
             background-color: #ecf0f1;
             position: absolute;
             bottom: 0;
             left: 50%;
             margin-left: -2px;
             transform-origin: bottom center;
-            transform: rotate(0deg);
+            transform: rotate(0deg); 
             z-index: 10;
             border-radius: 50% 50% 0 0;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            will-change: transform;
         }
 
         .needle-center {
@@ -156,23 +173,23 @@
         }
 
         button {
-            background-color: #f1c40f;
+            background-color: var(--accent-yellow);
             border: none;
             padding: 16px;
             font-size: 16px;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--bg-color);
             border-radius: 12px;
             cursor: pointer;
             transition: transform 0.1s;
-            box-shadow: 0 4px 0 #b7950b;
-            -webkit-tap-highlight-color: transparent; /* Убирает серый фон при тапе на iOS */
+            box-shadow: 0 4px 0 var(--accent-dark-yellow);
+            -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
         button:active {
             transform: translateY(4px);
-            box-shadow: 0 0 0 #b7950b;
+            box-shadow: 0 0 0 var(--accent-dark-yellow);
         }
 
         button:disabled {
@@ -183,26 +200,24 @@
             opacity: 0.7;
         }
 
-        #scanBtn {
-            flex-grow: 1;
-            font-size: 18px;
-        }
+        #scanBtn { flex-grow: 1; font-size: 18px; }
 
         .sound-btn {
             background-color: #3498db;
             box-shadow: 0 4px 0 #2980b9;
             color: white;
             width: 60px;
-            font-size: 20px;
+            font-size: 22px;
+            padding: 14px 0;
         }
         .sound-btn:active { box-shadow: 0 0 0 #2980b9; }
 
         #result-text {
             margin-top: 20px;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             min-height: 1.5em;
-            color: #ecf0f1;
+            color: var(--text-color);
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             line-height: 1.2;
         }
@@ -210,12 +225,13 @@
         .status-light {
             width: 12px;
             height: 12px;
-            background-color: #333;
+            background-color: #222;
             border-radius: 50%;
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+            transition: background 0.3s;
         }
         .status-light.active {
             background-color: #e74c3c;
@@ -224,7 +240,6 @@
         }
 
         @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
-
     </style>
 </head>
 <body>
@@ -232,32 +247,30 @@
     <div class="device-container" id="device">
         <div class="status-light" id="led"></div>
         <h1>ЗРАДА ПРИБОР</h1>
-        <div class="subtitle">Mobile Edition v2.1</div>
-
+        <div class="subtitle">Online Scanner v3.0</div>
+        
         <div class="gauge-wrapper">
             <div class="gauge">
                 <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
                 <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
                 <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
-
+                
                 <div class="needle" id="needle"></div>
             </div>
             <div class="needle-center"></div>
         </div>
 
         <div class="controls">
-            <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔇</button>
-            <button id="scanBtn" onclick="startAnalysis()">СКАН</button>
+            <button class="sound-btn" id="soundBtn" aria-label="Звук" onclick="toggleSound()">🔇</button>
+            <button id="scanBtn" onclick="startAnalysis()">ЗАПУСТИТЬ</button>
         </div>
 
         <div id="result-text">Готов к работе</div>
     </div>
 
     <script>
-        // Предотвращаем скролл и зум на iOS при двойном тапе
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-        });
+        // Предотвращаем скролл и зум на iOS
+        document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 
         const needle = document.getElementById('needle');
         const resultText = document.getElementById('result-text');
@@ -269,7 +282,7 @@
         let isSoundOn = false;
         let audioCtx = null;
 
-        // "Разогрев" аудио-контекста для iOS
+        // Unlock AudioContext for iOS Safari
         function unlockAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -278,7 +291,7 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-            // Проигрываем тишину, чтобы Safari понял, что мы хотим играть звук
+            // Silent buffer to unlock
             const buffer = audioCtx.createBuffer(1, 1, 22050);
             const source = audioCtx.createBufferSource();
             source.buffer = buffer;
@@ -296,23 +309,21 @@
         function playTone(type) {
             if (!isSoundOn || !audioCtx) return;
 
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
             const now = audioCtx.currentTime;
-
+            
             if (type === 'tick') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(150 + Math.random() * 50, now);
                 gain.gain.setValueAtTime(0.05, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
                 osc.start(now);
                 osc.stop(now + 0.05);
-            }
+            } 
             else if (type === 'peremoga') {
-                // Аккорд C-Major
                 const playNote = (f, d) => {
                     const o = audioCtx.createOscillator();
                     const g = audioCtx.createGain();
@@ -325,11 +336,16 @@
                     o.start(now + d);
                     o.stop(now + d + 0.3);
                 };
-                playNote(523.25, 0);
-                playNote(659.25, 0.1);
-                playNote(783.99, 0.2);
-            }
+                playNote(523.25, 0); // C
+                playNote(659.25, 0.1); // E
+                playNote(783.99, 0.2); // G
+                playNote(1046.50, 0.4); // High C
+            } 
             else if (type === 'zrada') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(600, now);
                 osc.frequency.linearRampToValueAtTime(800, now + 0.2);
@@ -338,50 +354,48 @@
                 gain.gain.linearRampToValueAtTime(0, now + 0.4);
                 osc.start(now);
                 osc.stop(now + 0.4);
-            }
+            } 
             else if (type === 'zadnitsa') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(120, now);
-                osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.6);
                 gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.5);
+                gain.gain.linearRampToValueAtTime(0, now + 0.6);
                 osc.start(now);
-                osc.stop(now + 0.5);
+                osc.stop(now + 0.6);
             }
         }
 
         function startAnalysis() {
-            // Обязательно пытаемся разблокировать аудио при нажатии на старт
             if (isSoundOn) unlockAudio();
 
             scanBtn.disabled = true;
             scanBtn.innerText = "⏳...";
             resultText.innerText = "АНАЛИЗ ДАННЫХ";
             resultText.style.color = "#ecf0f1";
-
+            
             device.classList.add('shaking');
             led.classList.add('active');
-
+            
             needle.style.transition = "none";
 
             let scanSteps = 0;
-            const maxSteps = 25;
+            const maxSteps = 30; // Чуть дольше для саспенса
 
             const interval = setInterval(() => {
                 const randomAngle = Math.floor(Math.random() * 180) - 90;
                 needle.style.transform = `rotate(${randomAngle}deg)`;
-
-                if (scanSteps % 3 === 0) playTone('tick');
-
-                // Легкая вибрация для Android (iOS игнорирует, но не ломается)
+                
+                if (scanSteps % 4 === 0) playTone('tick');
                 if (navigator.vibrate) navigator.vibrate(5);
 
                 scanSteps++;
-
-                if (scanSteps >= maxSteps) {
-                    finishAnalysis(interval);
-                }
-            }, 80);
+                if (scanSteps >= maxSteps) finishAnalysis(interval);
+            }, 70);
         }
 
         function finishAnalysis(interval) {
@@ -390,8 +404,9 @@
             led.classList.remove('active');
 
             const finalAngle = Math.floor(Math.random() * 180) - 90;
-            needle.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)"; // Эффект отскока
-
+            // Реалистичный отскок стрелки
+            needle.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)"; 
+            
             setTimeout(() => {
                 needle.style.transform = `rotate(${finalAngle}deg)`;
                 showResult(finalAngle);
@@ -409,7 +424,7 @@
                     color = "#2ecc71";
                     soundType = "peremoga";
                 } else if (angle > -30 && angle < 30) {
-                    text = "ЗРАДА! 🤬";
+                    text = "УВЫ, ЗРАДА! 🤬";
                     color = "#e74c3c";
                     soundType = "zrada";
                 } else {
@@ -421,12 +436,12 @@
                 resultText.innerText = text;
                 resultText.style.color = color;
                 playTone(soundType);
-
-                if (navigator.vibrate) navigator.vibrate(50);
+                
+                if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 
                 scanBtn.disabled = false;
-                scanBtn.innerText = "СКАН";
-            }, 500);
+                scanBtn.innerText = "ЗАПУСТИТЬ";
+            }, 600);
         }
     </script>
 </body>
