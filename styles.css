@@ -1,0 +1,909 @@
+/* ==========================================================================
+   LIQUID GLASS UI — СТИЛИ И ТЕМАТИЗАЦИЯ (ЯРКАЯ / ТЁМНАЯ)
+   ========================================================================== */
+
+:root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+    --radius-panel: 34px;
+    --radius-chamber: 22px;
+    --radius-pill: 999px;
+    --ease-spring: cubic-bezier(0.28, 1.32, 0.52, 1);
+    --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   ТЕМА 1: ЯРКАЯ (Кристальное дневное жидкое стекло)
+   -------------------------------------------------------------------------- */
+:root,
+html[data-theme="light"] {
+    color-scheme: light;
+    --bg-base: #8cc5f8;
+
+    /* Живая, благородная дневная сцена (лазурь, мягкий индиго и тёплый солнечный горизонт) */
+    --scene-sky: linear-gradient(
+        152deg,
+        #3b82f6 0%,
+        #60a5fa 26%,
+        #bae6fd 54%,
+        #fde6cc 80%,
+        #fdb585 100%
+    );
+    --scene-wave-1: linear-gradient(128deg, rgba(37, 99, 235, 0.52) 0%, rgba(56, 189, 248, 0.24) 55%, rgba(255, 255, 255, 0.22) 100%);
+    --scene-wave-2: linear-gradient(210deg, rgba(249, 115, 22, 0.46) 0%, rgba(251, 191, 36, 0.30) 48%, rgba(255, 255, 255, 0.16) 100%);
+    --scene-wave-3: linear-gradient(155deg, rgba(99, 102, 241, 0.34) 0%, rgba(56, 189, 248, 0.18) 54%, rgba(255, 255, 255, 0.08) 100%);
+    --scene-ridge: rgba(255, 255, 255, 0.88);
+    --scene-ridge-soft: rgba(255, 255, 255, 0.50);
+
+    /* Оптическая формула жидкого стекла (Яркая тема: прозрачный центр + глянцевый мениск) */
+    --glass-bg: linear-gradient(
+        166deg,
+        rgba(255, 255, 255, 0.44) 0%,
+        rgba(255, 255, 255, 0.18) 44%,
+        rgba(255, 255, 255, 0.30) 100%
+    );
+    --glass-bg-pill: linear-gradient(
+        166deg,
+        rgba(255, 255, 255, 0.48) 0%,
+        rgba(255, 255, 255, 0.20) 48%,
+        rgba(255, 255, 255, 0.34) 100%
+    );
+    --glass-filter: blur(16px) saturate(175%) brightness(1.06) contrast(1.03);
+    --glass-filter-pill: blur(12px) saturate(185%) brightness(1.07) contrast(1.03);
+
+    /* Дисперсионная фаска Френеля */
+    --glass-rim-width: 1.5px;
+    --glass-rim-1: rgba(255, 255, 255, 0.98);
+    --glass-rim-2: rgba(210, 238, 255, 0.80);
+    --glass-rim-3: rgba(255, 255, 255, 0.22);
+    --glass-rim-4: rgba(255, 236, 214, 0.56);
+    --glass-rim-5: rgba(255, 255, 255, 0.92);
+
+    /* Внутренняя толщина линзы и каустика */
+    --glass-outer-hairline: rgba(15, 35, 68, 0.10);
+    --glass-edge-top: rgba(255, 255, 255, 0.98);
+    --glass-bevel-top: rgba(255, 255, 255, 0.48);
+    --glass-edge-bottom: rgba(255, 255, 255, 0.86);
+    --glass-caustic-bottom: rgba(255, 255, 255, 0.52);
+    --glass-edge-side: rgba(255, 255, 255, 0.38);
+
+    --glass-sheen-spot: rgba(255, 255, 255, 0.26);
+    --glass-sheen-arc: rgba(255, 255, 255, 0.44);
+
+    --glass-shadow:
+        0 0 0 0.5px var(--glass-outer-hairline),
+        0 3px 8px rgba(15, 38, 72, 0.10),
+        0 24px 52px -12px rgba(15, 44, 84, 0.22),
+        0 10px 22px -10px rgba(37, 99, 235, 0.14);
+    --glass-shadow-pill:
+        0 0 0 0.5px var(--glass-outer-hairline),
+        0 2px 6px rgba(15, 38, 72, 0.08),
+        0 12px 26px -8px rgba(15, 44, 84, 0.18);
+
+    /* Сегментный ползунок */
+    --seg-thumb-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 247, 255, 0.82) 100%);
+    --seg-thumb-border: rgba(255, 255, 255, 1);
+    --seg-thumb-shadow:
+        0 2px 8px rgba(15, 38, 72, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+
+    /* Текст */
+    --text-primary: #091220;
+    --text-secondary: rgba(9, 18, 32, 0.72);
+    --text-muted: rgba(9, 18, 32, 0.48);
+
+    /* Камера шкалы (чистая фарфоровая подложка без цветовых искажений секторов) */
+    --dial-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(246, 249, 255, 0.84) 100%);
+    --dial-border: rgba(255, 255, 255, 0.96);
+    --dial-inner-shadow:
+        inset 0 2px 10px rgba(15, 38, 72, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    --dial-ring: rgba(9, 18, 32, 0.15);
+    --dial-tick: rgba(9, 18, 32, 0.34);
+    --dial-tick-major: rgba(9, 18, 32, 0.84);
+    --dial-label: rgba(9, 18, 32, 0.90);
+    --dial-dome-glare: rgba(255, 255, 255, 0.72);
+    --dial-pin: #64748b;
+
+    --needle-light: #334155;
+    --needle-dark: #0f172a;
+    --needle-tip: #e11d48;
+    --hub-outer: #cbd5e1;
+    --hub-inner: #1e293b;
+
+    /* Главная кнопка — капсула жидкого стекла */
+    --btn-bg: linear-gradient(172deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.42) 50%, rgba(255, 255, 255, 0.62) 100%);
+    --btn-bg-hover: linear-gradient(172deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.54) 50%, rgba(255, 255, 255, 0.74) 100%);
+    --btn-bg-active: linear-gradient(172deg, rgba(238, 245, 255, 0.66) 0%, rgba(255, 255, 255, 0.48) 100%);
+    --btn-text: #091220;
+    --btn-sheen: rgba(255, 255, 255, 0.56);
+    --btn-shadow:
+        0 0 0 0.5px rgba(15, 38, 72, 0.10),
+        inset 0 1.5px 1px rgba(255, 255, 255, 1),
+        inset 0 6px 12px -4px rgba(255, 255, 255, 0.55),
+        inset 0 -2px 3px rgba(255, 255, 255, 0.78),
+        0 10px 24px -8px rgba(15, 38, 72, 0.18),
+        0 2px 6px rgba(15, 38, 72, 0.08);
+
+    /* Зоны прибора */
+    --zone-peremoga: #059669;
+    --zone-zrada: #dc2626;
+    --zone-zadnitsa: #c25e00;
+}
+
+/* --------------------------------------------------------------------------
+   ТЕМА 2: ТЁМНАЯ (Дымчатое обсидиановое жидкое стекло)
+   -------------------------------------------------------------------------- */
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg-base: #05070b;
+
+    /* Глубокий графитово-ночной фон со студийными световыми дугами */
+    --scene-sky: linear-gradient(
+        152deg,
+        #05070b 0%,
+        #090e18 36%,
+        #0e1726 68%,
+        #070a10 100%
+    );
+    --scene-wave-1: linear-gradient(128deg, rgba(30, 58, 118, 0.42) 0%, rgba(14, 116, 144, 0.20) 52%, rgba(15, 23, 42, 0.06) 100%);
+    --scene-wave-2: linear-gradient(210deg, rgba(15, 118, 110, 0.34) 0%, rgba(30, 64, 138, 0.22) 48%, transparent 100%);
+    --scene-wave-3: linear-gradient(155deg, rgba(30, 41, 68, 0.44) 0%, rgba(15, 23, 42, 0.22) 55%, transparent 100%);
+    --scene-ridge: rgba(186, 224, 255, 0.38);
+    --scene-ridge-soft: rgba(148, 197, 255, 0.20);
+
+    /* Оптическая формула жидкого стекла (Тёмная тема: дымчатый обсидиан) */
+    --glass-bg: linear-gradient(
+        166deg,
+        rgba(255, 255, 255, 0.10) 0%,
+        rgba(10, 13, 20, 0.52) 46%,
+        rgba(255, 255, 255, 0.04) 100%
+    );
+    --glass-bg-pill: linear-gradient(
+        166deg,
+        rgba(255, 255, 255, 0.13) 0%,
+        rgba(14, 18, 28, 0.48) 50%,
+        rgba(255, 255, 255, 0.06) 100%
+    );
+    --glass-filter: blur(18px) saturate(165%) brightness(1.08) contrast(1.06);
+    --glass-filter-pill: blur(13px) saturate(180%) brightness(1.10) contrast(1.05);
+
+    --glass-rim-width: 1.35px;
+    --glass-rim-1: rgba(255, 255, 255, 0.66);
+    --glass-rim-2: rgba(176, 222, 255, 0.30);
+    --glass-rim-3: rgba(255, 255, 255, 0.07);
+    --glass-rim-4: rgba(186, 230, 253, 0.16);
+    --glass-rim-5: rgba(255, 255, 255, 0.38);
+
+    --glass-outer-hairline: rgba(0, 0, 0, 0.60);
+    --glass-edge-top: rgba(255, 255, 255, 0.48);
+    --glass-bevel-top: rgba(255, 255, 255, 0.14);
+    --glass-edge-bottom: rgba(196, 228, 255, 0.22);
+    --glass-caustic-bottom: rgba(148, 197, 255, 0.12);
+    --glass-edge-side: rgba(255, 255, 255, 0.11);
+
+    --glass-sheen-spot: rgba(255, 255, 255, 0.11);
+    --glass-sheen-arc: rgba(255, 255, 255, 0.14);
+
+    --glass-shadow:
+        0 0 0 0.5px var(--glass-outer-hairline),
+        0 4px 12px rgba(0, 0, 0, 0.50),
+        0 30px 68px -12px rgba(0, 0, 0, 0.82);
+    --glass-shadow-pill:
+        0 0 0 0.5px var(--glass-outer-hairline),
+        0 2px 8px rgba(0, 0, 0, 0.44),
+        0 14px 30px -8px rgba(0, 0, 0, 0.70);
+
+    /* Сегментный ползунок */
+    --seg-thumb-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.10) 100%);
+    --seg-thumb-border: rgba(255, 255, 255, 0.40);
+    --seg-thumb-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.44);
+
+    /* Текст */
+    --text-primary: #f6f8fc;
+    --text-secondary: rgba(246, 248, 252, 0.70);
+    --text-muted: rgba(246, 248, 252, 0.44);
+
+    /* Камера шкалы */
+    --dial-bg: linear-gradient(180deg, rgba(6, 9, 16, 0.82) 0%, rgba(10, 14, 24, 0.72) 100%);
+    --dial-border: rgba(255, 255, 255, 0.15);
+    --dial-inner-shadow:
+        inset 0 4px 18px rgba(0, 0, 0, 0.60),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.11);
+    --dial-ring: rgba(255, 255, 255, 0.16);
+    --dial-tick: rgba(255, 255, 255, 0.34);
+    --dial-tick-major: rgba(255, 255, 255, 0.88);
+    --dial-label: rgba(255, 255, 255, 0.92);
+    --dial-dome-glare: rgba(255, 255, 255, 0.20);
+    --dial-pin: #94a3b8;
+
+    --needle-light: #f1f5f9;
+    --needle-dark: #94a3b8;
+    --needle-tip: #ff453a;
+    --hub-outer: #64748b;
+    --hub-inner: #0f172a;
+
+    /* Главная кнопка — капсула жидкого стекла */
+    --btn-bg: linear-gradient(172deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.07) 52%, rgba(255, 255, 255, 0.12) 100%);
+    --btn-bg-hover: linear-gradient(172deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.11) 52%, rgba(255, 255, 255, 0.17) 100%);
+    --btn-bg-active: linear-gradient(172deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.06) 100%);
+    --btn-text: #ffffff;
+    --btn-sheen: rgba(255, 255, 255, 0.20);
+    --btn-shadow:
+        0 0 0 0.5px rgba(0, 0, 0, 0.55),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.42),
+        inset 0 6px 12px -4px rgba(255, 255, 255, 0.12),
+        inset 0 -1.5px 2px rgba(186, 230, 253, 0.18),
+        0 10px 26px -6px rgba(0, 0, 0, 0.55);
+
+    /* Зоны прибора */
+    --zone-peremoga: #30d158;
+    --zone-zrada: #ff453a;
+    --zone-zadnitsa: #ff9f0a;
+}
+
+/* --------------------------------------------------------------------------
+   БАЗОВАЯ ГЕОМЕТРИЯ СТРАНИЦЫ
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100dvh;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    overflow-x: hidden;
+    transition: background-color 0.45s var(--ease-smooth), color 0.3s ease;
+}
+
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: max(14px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    gap: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   СКУЛЬПТУРНАЯ СВЕТОВАЯ СЦЕНА ДЛЯ ОПТИЧЕСКОЙ РЕФРАКЦИИ
+   -------------------------------------------------------------------------- */
+.scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: var(--scene-sky);
+}
+
+.scene-wave {
+    position: absolute;
+    border-radius: 44% 56% 52% 48% / 46% 42% 58% 54%;
+    border-top: 2px solid var(--scene-ridge);
+    border-bottom: 1.5px solid var(--scene-ridge-soft);
+    will-change: transform;
+    transition: background 0.9s var(--ease-smooth), border-color 0.6s ease;
+}
+
+.scene-wave--a {
+    width: 145vmax;
+    height: 82vmax;
+    left: -26vmax;
+    top: -66vmax;
+    background: var(--scene-wave-1);
+    transform: rotate(-8deg);
+}
+
+.scene-wave--b {
+    width: 140vmax;
+    height: 84vmax;
+    right: -34vmax;
+    bottom: -48vmax;
+    background: var(--scene-wave-2);
+    transform: rotate(13deg);
+}
+
+.scene-wave--c {
+    width: 132vmax;
+    height: 66vmax;
+    left: -18vmax;
+    top: 24vh;
+    background: var(--scene-wave-3);
+    transform: rotate(-6deg);
+}
+
+/* Мягкое свечение сцены под результат замера */
+.scene-verdict-wash {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-smooth), background 0.7s var(--ease-smooth);
+}
+
+body[data-verdict="peremoga"] .scene-verdict-wash {
+    opacity: 1;
+    background: radial-gradient(76% 58% at 50% 48%, rgba(48, 209, 88, 0.25) 0%, transparent 72%);
+}
+
+body[data-verdict="zrada"] .scene-verdict-wash {
+    opacity: 1;
+    background: radial-gradient(76% 58% at 50% 48%, rgba(255, 69, 58, 0.25) 0%, transparent 72%);
+}
+
+body[data-verdict="zadnitsa"] .scene-verdict-wash {
+    opacity: 1;
+    background: radial-gradient(76% 58% at 50% 48%, rgba(255, 159, 10, 0.25) 0%, transparent 72%);
+}
+
+html[data-theme="light"] body[data-verdict="peremoga"] .scene-verdict-wash {
+    background: radial-gradient(78% 60% at 50% 48%, rgba(16, 185, 129, 0.30) 0%, transparent 72%);
+}
+
+html[data-theme="light"] body[data-verdict="zrada"] .scene-verdict-wash {
+    background: radial-gradient(78% 60% at 50% 48%, rgba(239, 68, 68, 0.26) 0%, transparent 72%);
+}
+
+html[data-theme="light"] body[data-verdict="zadnitsa"] .scene-verdict-wash {
+    background: radial-gradient(78% 60% at 50% 48%, rgba(245, 158, 11, 0.30) 0%, transparent 72%);
+}
+
+/* --------------------------------------------------------------------------
+   МАТЕРИАЛ .glass — ЧИСТОЕ ОПТИЧЕСКОЕ ЖИДКОЕ СТЕКЛО
+   -------------------------------------------------------------------------- */
+.glass {
+    position: relative;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-filter);
+    backdrop-filter: var(--glass-filter);
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 1.5px 1px var(--glass-edge-top),
+        inset 0 6px 14px -3px var(--glass-bevel-top),
+        inset 0 -2px 3px var(--glass-edge-bottom),
+        inset 0 -16px 26px -16px var(--glass-caustic-bottom),
+        inset 2px 0 4px var(--glass-edge-side),
+        inset -2px 0 4px var(--glass-edge-side);
+    transition:
+        transform 0.22s var(--ease-spring),
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.glass--pill {
+    background: var(--glass-bg-pill);
+    -webkit-backdrop-filter: var(--glass-filter-pill);
+    backdrop-filter: var(--glass-filter-pill);
+    box-shadow:
+        var(--glass-shadow-pill),
+        inset 0 1.5px 1px var(--glass-edge-top),
+        inset 0 4px 10px -2px var(--glass-bevel-top),
+        inset 0 -1.5px 2px var(--glass-edge-bottom),
+        inset 0 -10px 18px -12px var(--glass-caustic-bottom),
+        inset 1.5px 0 3px var(--glass-edge-side),
+        inset -1.5px 0 3px var(--glass-edge-side);
+}
+
+/* Оптическая фаска Френеля с хроматическим краем */
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--glass-rim-width);
+    background: linear-gradient(
+        var(--rim-angle, 134deg),
+        var(--glass-rim-1) 0%,
+        var(--glass-rim-2) 18%,
+        var(--glass-rim-3) 48%,
+        var(--glass-rim-4) 78%,
+        var(--glass-rim-5) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Купольный блик верхней грани стекла */
+.glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        radial-gradient(
+            240px circle at var(--gx, 26%) var(--gy, 14%),
+            var(--glass-sheen-spot) 0%,
+            transparent 65%
+        ),
+        linear-gradient(
+            180deg,
+            var(--glass-sheen-arc) 0%,
+            rgba(255, 255, 255, 0.04) 15%,
+            transparent 36%
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .glass--pill {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: var(--bg-base) !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   ВЕРХНЯЯ ПАНЕЛЬ (ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ + ЗВУК)
+   -------------------------------------------------------------------------- */
+.topbar {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 416px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.seg-control {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 4px;
+    border-radius: var(--radius-pill);
+    height: 42px;
+    min-width: 178px;
+}
+
+.seg-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc((100% - 8px) / 2);
+    height: calc(100% - 8px);
+    border-radius: var(--radius-pill);
+    background: var(--seg-thumb-bg);
+    border: 1px solid var(--seg-thumb-border);
+    box-shadow: var(--seg-thumb-shadow);
+    transform: translateX(calc(var(--seg-idx, 0) * 100%));
+    transition: transform 0.38s var(--ease-spring), background 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.seg-btn {
+    position: relative;
+    z-index: 3;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    transition: color 0.22s ease, transform 0.16s ease;
+}
+
+.seg-btn[aria-pressed="true"] {
+    color: var(--text-primary);
+}
+
+.seg-btn:active {
+    transform: scale(0.95);
+}
+
+.seg-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.sound-btn {
+    height: 42px;
+    padding: 0 15px;
+    border: none;
+    border-radius: var(--radius-pill);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.sound-btn > * {
+    position: relative;
+    z-index: 3;
+}
+
+.sound-btn:hover {
+    color: var(--text-primary);
+}
+
+.sound-btn:active {
+    transform: scale(0.96);
+}
+
+.sound-btn.active {
+    color: var(--text-primary);
+}
+
+.sound-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   ЦЕНТРАЛЬНЫЙ ПРИБОР
+   -------------------------------------------------------------------------- */
+.stage {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 416px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instrument {
+    width: 100%;
+    border-radius: var(--radius-panel);
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.instrument > * {
+    position: relative;
+    z-index: 3;
+}
+
+.instrument.shaking {
+    animation: deviceShake 0.14s infinite alternate ease-in-out;
+}
+
+@keyframes deviceShake {
+    0% { transform: translate(-1px, 0.6px) rotate(-0.22deg); }
+    100% { transform: translate(1px, -0.6px) rotate(0.22deg); }
+}
+
+.inst-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+}
+
+.inst-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+
+.status-led {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #a7f3d0 0%, var(--zone-peremoga) 60%, #047857 100%);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.28),
+        inset 0 1px 1px rgba(255, 255, 255, 0.65),
+        0 0 10px var(--zone-peremoga);
+    flex-shrink: 0;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.status-led.scanning {
+    background: radial-gradient(circle at 35% 30%, #fecaca 0%, var(--zone-zrada) 60%, #991b1b 100%);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.28),
+        inset 0 1px 1px rgba(255, 255, 255, 0.65),
+        0 0 14px var(--zone-zrada);
+    animation: ledBlink 0.14s infinite alternate;
+}
+
+@keyframes ledBlink {
+    from { opacity: 0.45; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1.08); }
+}
+
+/* --------------------------------------------------------------------------
+   АНАЛОГОВЫЙ ЦИФЕРБЛАТ ПОД ВЫПУКЛЫМ СТЕКЛОМ
+   -------------------------------------------------------------------------- */
+.dial-chamber {
+    position: relative;
+    border-radius: var(--radius-chamber);
+    background: var(--dial-bg);
+    border: 1px solid var(--dial-border);
+    box-shadow: var(--dial-inner-shadow);
+    padding: 12px 10px 8px;
+    overflow: hidden;
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.dial-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+.dial-sector {
+    opacity: 0.24;
+    transition: opacity 0.38s ease, filter 0.38s ease;
+}
+
+html[data-theme="light"] .dial-sector {
+    opacity: 0.34;
+}
+
+.dial-sector.active {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 10px currentColor);
+}
+
+html[data-theme="light"] .dial-sector.active {
+    opacity: 0.72;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+.dial-label {
+    font-size: 9.6px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    fill: var(--dial-label);
+    opacity: 0.82;
+    transition: opacity 0.3s ease;
+}
+
+.dial-label.active {
+    opacity: 1;
+}
+
+/* Сапфировый купольный блик */
+.dial-dome {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 88% 48% at 50% 3%, var(--dial-dome-glare) 0%, transparent 62%),
+        linear-gradient(158deg, rgba(255, 255, 255, 0.16) 0%, transparent 26%);
+    box-shadow:
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.45),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.10);
+}
+
+/* --------------------------------------------------------------------------
+   РЕЗУЛЬТАТ И СТЕКЛЯННАЯ КНОПКА ЗАПУСКА
+   -------------------------------------------------------------------------- */
+.verdict-box {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2px 6px;
+}
+
+.verdict-text {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.verdict-text.pop {
+    animation: verdictPop 0.34s var(--ease-spring);
+}
+
+@keyframes verdictPop {
+    0% { transform: translateY(3px) scale(0.96); opacity: 0.6; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.action-btn {
+    position: relative;
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: var(--btn-bg);
+    box-shadow: var(--btn-shadow);
+    color: var(--btn-text);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition:
+        transform 0.18s var(--ease-spring),
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.action-btn::after {
+    content: "";
+    position: absolute;
+    inset: 1px 10px auto;
+    height: 46%;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(180deg, var(--btn-sheen) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.action-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.3px;
+    background: linear-gradient(
+        142deg,
+        var(--glass-rim-1) 0%,
+        var(--glass-rim-2) 22%,
+        var(--glass-rim-3) 50%,
+        var(--glass-rim-5) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: var(--btn-bg-hover);
+    transform: translateY(-1px);
+}
+
+.action-btn:active:not(:disabled) {
+    background: var(--btn-bg-active);
+    transform: scale(0.976);
+}
+
+.action-btn:disabled {
+    opacity: 0.65;
+    cursor: default;
+}
+
+.btn-spinner {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    display: none;
+    animation: spin 0.7s linear infinite;
+}
+
+.action-btn.loading .btn-spinner {
+    display: block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   ПОДВАЛ
+   -------------------------------------------------------------------------- */
+.footer {
+    position: relative;
+    z-index: 2;
+}
+
+.tg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 38px;
+    padding: 0 15px;
+    border-radius: var(--radius-pill);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.tg-pill > * {
+    position: relative;
+    z-index: 3;
+}
+
+.tg-pill:hover {
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.tg-pill:active {
+    transform: scale(0.96);
+}
+
+.tg-pill svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   АДАПТИВНОСТЬ И НАСТРОЙКИ ДВИЖЕНИЯ
+   -------------------------------------------------------------------------- */
+@media (max-height: 640px) {
+    body {
+        gap: 8px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .instrument {
+        padding: 16px 16px 14px;
+        gap: 12px;
+        border-radius: 28px;
+    }
+
+    .action-btn {
+        height: 48px;
+    }
+
+    .verdict-text {
+        font-size: 19px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
