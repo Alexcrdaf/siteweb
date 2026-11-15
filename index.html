@@ -1,217 +1,279 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <!-- SEO и Соцсети -->
-    <title>Зрада Прибор | Онлайн Анализатор</title>
-    <meta name="description" content="Узнай судьбу: Перемога, Зрада или Тотальная Задница? Мем-анализатор ситуации.">
-    <meta property="og:title" content="Зрада Прибор Онлайн">
-    <meta property="og:description" content="Генератор случайных прогнозов. Проверь свой уровень удачи прямо сейчас.">
-    <meta property="og:type" content="website">
-    
-    <!-- Настройки для мобилок (iOS/Android) -->
+    <title>Зрада Прибор | Анализатор</title>
+    <meta name="description" content="Узнай судьбу: Перемога, Зрада или Полная Задница?">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#2c3e50">
-    
-    <!-- Иконка сайта -->
+    <meta name="theme-color" content="#1e272e">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
 
     <style>
-        /* ТЕМНАЯ ТЕМА (по умолчанию) */
         :root.dark-theme {
-            --bg-color: #2c3e50;
-            --panel-color: #34495e;
-            --text-color: #ecf0f1;
-            --accent-yellow: #f1c40f;
-            --accent-dark-yellow: #b7950b;
+            --bg-color: #161b22;
+            --bg-radial: radial-gradient(circle at 50% 30%, #242d38 0%, #11151a 100%);
+            --panel-color: #212832;
+            --panel-inner: #181d24;
+            --text-color: #f0f6fc;
+            --muted-text: #8b949e;
+            --accent: #f1c40f;
+            --accent-shadow: #b7950b;
             --peremoga: #2ecc71;
             --zrada: #e74c3c;
-            --zadnitsa: #5d4037;
-            --border-color: #7f8c8d;
-            --label-color: #222;
+            --zadnitsa: #795548;
+            --border-color: #30363d;
+            --screw-color: #484f58;
+            --glass-sheen: rgba(255, 255, 255, 0.08);
         }
 
-        /* СВЕТЛАЯ ТЕМА */
         :root.light-theme {
-            --bg-color: #f5f5f7;
+            --bg-color: #e5e7eb;
+            --bg-radial: radial-gradient(circle at 50% 30%, #f9fafb 0%, #d1d5db 100%);
             --panel-color: #ffffff;
-            --text-color: #1d1d1f;
-            --accent-yellow: #ffd60a;
-            --accent-dark-yellow: #b59e00;
-            --peremoga: #34c759;
-            --zrada: #ff3b30;
-            --zadnitsa: #a0522d;
-            --border-color: #d5d5d7;
-            --label-color: #f5f5f7;
+            --panel-inner: #f3f4f6;
+            --text-color: #111827;
+            --muted-text: #6b7280;
+            --accent: #f59e0b;
+            --accent-shadow: #b45309;
+            --peremoga: #10b981;
+            --zrada: #ef4444;
+            --zadnitsa: #8d6e63;
+            --border-color: #d1d5db;
+            --screw-color: #9ca3af;
+            --glass-sheen: rgba(255, 255, 255, 0.55);
         }
 
-        /* iOS 26 СТИЛЬ */
         :root.ios-theme {
             --bg-color: #000000;
-            --panel-color: #1c1c1e;
+            --bg-radial: radial-gradient(circle at 50% 20%, #1c1c1e 0%, #000000 100%);
+            --panel-color: rgba(28, 28, 30, 0.78);
+            --panel-inner: rgba(44, 44, 46, 0.65);
             --text-color: #ffffff;
-            --accent-yellow: #0a84ff;
-            --accent-dark-yellow: #0066cc;
-            --peremoga: #30b0c0;
+            --muted-text: #98989d;
+            --accent: #0a84ff;
+            --accent-shadow: #005bb5;
+            --peremoga: #30d158;
             --zrada: #ff453a;
-            --zadnitsa: #a2845c;
-            --border-color: #424245;
-            --label-color: #000000;
+            --zadnitsa: #ac8e68;
+            --border-color: rgba(255, 255, 255, 0.16);
+            --screw-color: rgba(255, 255, 255, 0.25);
+            --glass-sheen: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-radial);
             background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            min-height: 100vh;
-            height: 100dvh; 
+            min-height: 100dvh;
             margin: 0;
+            padding: env(safe-area-inset-top, 12px) 16px env(safe-area-inset-bottom, 12px);
             color: var(--text-color);
             user-select: none;
             -webkit-user-select: none;
             overflow: hidden;
             touch-action: manipulation;
-            transition: background-color 0.3s;
+            transition: background 0.3s, color 0.3s;
         }
 
         .header {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            right: 0;
+            width: 100%;
+            max-width: 440px;
             display: flex;
-            justify-content: center;
-            gap: 8px;
-            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 4px;
+            z-index: 10;
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: 6px;
+            background: var(--panel-color);
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .theme-btn {
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            border: 2px solid var(--border-color);
-            background-color: var(--panel-color);
+            border: none;
+            background: transparent;
             color: var(--text-color);
-            font-size: 20px;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+            transition: background-color 0.2s, transform 0.15s;
+            box-shadow: none;
+            padding: 0;
         }
 
-        .theme-btn:active {
-            transform: scale(0.9);
+        .theme-btn:hover {
+            transform: scale(1.06);
         }
 
         .theme-btn.active {
-            background-color: var(--accent-yellow);
-            color: var(--bg-color);
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+            background-color: var(--accent);
+            color: #111;
         }
 
-        .bg-toggle-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--border-color);
-            background-color: var(--panel-color);
-            color: var(--text-color);
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .ios-theme .theme-btn.active {
+            color: #fff;
+        }
+
+        .sound-pill {
             display: flex;
             align-items: center;
-            justify-content: center;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+            gap: 6px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--panel-color);
+            color: var(--text-color);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
         }
 
-        .bg-toggle-btn:active {
-            transform: scale(0.9);
-        }
-
-        .bg-toggle-btn.active {
-            background-color: var(--accent-yellow);
-            color: var(--bg-color);
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+        .sound-pill.active {
+            border-color: var(--peremoga);
+            color: var(--peremoga);
         }
 
         .main-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
             flex: 1;
         }
 
         .device-container {
             background-color: var(--panel-color);
-            padding: 40px;
-            border-radius: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            padding: 28px 24px 24px;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             text-align: center;
-            width: 80%; 
-            max-width: 600px;
-            min-width: 300px;
-            border: 8px solid var(--border-color);
+            width: 100%;
+            max-width: 440px;
+            border: 2px solid var(--border-color);
             position: relative;
             transition: all 0.3s;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .light-theme .device-container {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .ios-theme .device-container {
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            background: rgba(28, 28, 30, 0.4);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
         }
 
-        .shaking { animation: shake 0.5s infinite; }
+        /* Декоративные винты корпуса */
+        .screw {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--screw-color);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+        }
+        .screw::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 2px;
+            right: 2px;
+            height: 1.5px;
+            background: rgba(0,0,0,0.45);
+            transform: rotate(35deg);
+        }
+        .screw.tl { top: 14px; left: 14px; }
+        .screw.tr { top: 14px; right: 14px; }
+        .screw.bl { bottom: 14px; left: 14px; }
+        .screw.br { bottom: 14px; right: 14px; }
+
+        .shaking {
+            animation: shake 0.4s infinite;
+        }
 
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            20% { transform: translate(-2px, 0px) rotate(1deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            60% { transform: translate(-2px, 1px) rotate(0deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-2px, 1px) rotate(-0.6deg); }
+            50% { transform: translate(2px, -1px) rotate(0.6deg); }
+            75% { transform: translate(-1px, -1px) rotate(0.3deg); }
+        }
+
+        .device-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .status-light {
+            width: 10px;
+            height: 10px;
+            background-color: #4b5563;
+            border-radius: 50%;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+            transition: all 0.25s;
+        }
+
+        .status-light.ready {
+            background-color: var(--peremoga);
+            box-shadow: 0 0 8px var(--peremoga);
+        }
+
+        .status-light.scanning {
+            background-color: var(--zrada);
+            box-shadow: 0 0 10px var(--zrada);
+            animation: blink 0.14s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
         }
 
         h1 {
-            margin: 0 0 5px 0;
+            margin: 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 28px;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-        }
-
-        .light-theme h1 {
-            text-shadow: none;
+            letter-spacing: 1.5px;
+            font-size: 24px;
+            font-weight: 800;
         }
 
         .subtitle {
             font-size: 11px;
-            color: var(--text-color);
-            margin-bottom: 20px;
+            color: var(--muted-text);
+            margin-bottom: 18px;
             text-transform: uppercase;
-            opacity: 0.6;
-            letter-spacing: 1px;
+            letter-spacing: 1.4px;
+            font-weight: 600;
+        }
+
+        .gauge-bezel {
+            background: var(--panel-inner);
+            padding: 14px 14px 10px;
+            border-radius: 22px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.35);
         }
 
         .gauge-wrapper {
@@ -219,9 +281,7 @@
             width: 100%;
             height: 0;
             padding-bottom: 50%;
-            margin: 20px auto;
             overflow: hidden;
-            flex: 1;
         }
 
         .gauge {
@@ -232,228 +292,235 @@
             left: 0;
             border-radius: 500px 500px 0 0;
             background: conic-gradient(
-                from 270deg at 50% 100%, 
-                var(--peremoga) 0deg 60deg,  
-                var(--zrada) 60deg 120deg, 
-                var(--zadnitsa) 120deg 180deg 
+                from 270deg at 50% 100%,
+                var(--peremoga) 0deg 60deg,
+                var(--zrada) 60deg 120deg,
+                var(--zadnitsa) 120deg 180deg
             );
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-            border: 2px solid var(--label-color);
+            box-shadow: inset 0 4px 18px rgba(0, 0, 0, 0.55);
+            border: 2px solid var(--border-color);
             border-bottom: none;
-            box-sizing: border-box;
+        }
+
+        /* Деления шкалы и блик стекла */
+        .gauge::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 500px 500px 0 0;
+            background: repeating-conic-gradient(
+                from 270deg at 50% 100%,
+                rgba(0, 0, 0, 0.35) 0deg 1.5deg,
+                transparent 1.5deg 15deg
+            );
+            -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 78%, black 79%);
+            mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 78%, black 79%);
+            pointer-events: none;
+        }
+
+        .gauge::after {
+            content: "";
+            position: absolute;
+            top: 4%;
+            left: 12%;
+            right: 12%;
+            height: 42%;
+            border-radius: 500px 500px 40px 40px;
+            background: linear-gradient(180deg, var(--glass-sheen) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         .label {
             position: absolute;
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px black;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
             z-index: 2;
             text-transform: uppercase;
+            color: #fff;
         }
-        @media (max-width: 360px) { .label { font-size: 10px; } }
 
-        .label-peremoga { bottom: 10%; left: 5%; color: #fff; }
-        .label-zrada { top: 15%; left: 50%; transform: translateX(-50%); color: #fff; }
-        .label-zadnitsa { bottom: 10%; right: 5%; color: #fff; }
+        @media (max-width: 360px) {
+            .label { font-size: 9.5px; }
+        }
 
-        .emoji { font-size: 18px; display: block; text-align: center; margin-bottom: 2px; }
+        .label-peremoga { bottom: 12%; left: 6%; }
+        .label-zrada { top: 18%; left: 50%; transform: translateX(-50%); }
+        .label-zadnitsa { bottom: 12%; right: 6%; }
+
+        .emoji {
+            font-size: 18px;
+            display: block;
+            text-align: center;
+            margin-bottom: 2px;
+        }
 
         .needle {
             width: 4px;
-            height: 90%;
-            background-color: var(--text-color);
+            height: 86%;
+            background: linear-gradient(180deg, #ff3b30 0%, var(--text-color) 35%);
             position: absolute;
             bottom: 0;
             left: 50%;
             margin-left: -2px;
             transform-origin: bottom center;
-            transform: rotate(0deg); 
+            transform: rotate(0deg);
             z-index: 10;
-            border-radius: 50% 50% 0 0;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
             will-change: transform;
         }
 
         .needle-center {
-            width: 20px;
-            height: 20px;
-            background-color: #95a5a6;
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 35% 35%, #d1d5db, #4b5563);
             border-radius: 50%;
             position: absolute;
-            bottom: -10px;
+            bottom: -11px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 11;
-            box-shadow: 0 0 5px black;
-            border: 2px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--panel-inner);
+        }
+
+        .display-box {
+            margin-top: 16px;
+            padding: 14px 12px;
+            border-radius: 16px;
+            background: var(--panel-inner);
+            border: 1px solid var(--border-color);
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #result-text {
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            color: var(--text-color);
+            line-height: 1.25;
+            transition: color 0.25s, transform 0.2s;
         }
 
         .controls {
-            margin-top: 20px;
-            margin-bottom: 0;
+            margin-top: 16px;
             display: flex;
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
         }
 
-        button {
-            background-color: var(--accent-yellow);
+        #scanBtn {
+            width: 100%;
+            background-color: var(--accent);
             border: none;
             padding: 16px;
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--bg-color);
-            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #111827;
+            border-radius: 16px;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 4px 0 var(--accent-dark-yellow);
+            transition: transform 0.1s, box-shadow 0.15s, background-color 0.2s;
+            box-shadow: 0 4px 0 var(--accent-shadow);
             -webkit-tap-highlight-color: transparent;
             outline: none;
+            text-transform: uppercase;
         }
 
-        button:hover {
-            transform: scale(1.05);
+        .ios-theme #scanBtn {
+            color: #ffffff;
         }
 
-        button:active {
-            transform: translateY(4px) scale(1.05);
-            box-shadow: 0 0 0 var(--accent-dark-yellow);
+        #scanBtn:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--accent-shadow);
         }
 
-        button:disabled {
-            background-color: #95a5a6;
+        #scanBtn:disabled {
+            background-color: #6b7280;
+            color: #d1d5db;
             box-shadow: none;
             cursor: not-allowed;
             transform: translateY(4px);
-            opacity: 0.7;
         }
-
-        .ios-theme button {
-            border-radius: 18px;
-            padding: 14px 18px;
-            background: rgba(52, 152, 219, 0.4);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        #scanBtn { flex-grow: 1; font-size: 18px; }
-
-        .sound-btn {
-            background-color: #3498db;
-            box-shadow: 0 4px 0 #2980b9;
-            color: white;
-            width: 70px;
-            height: 56px;
-            font-size: 24px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .sound-btn:active { box-shadow: 0 0 0 #2980b9; }
-
-        #result-text {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            min-height: 1.5em;
-            color: var(--text-color);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            line-height: 1.2;
-        }
-
-        .light-theme #result-text {
-            text-shadow: none;
-        }
-
-        .status-light {
-            width: 12px;
-            height: 12px;
-            background-color: var(--label-color);
-            border-radius: 50%;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-            transition: background 0.3s;
-        }
-        .status-light.active {
-            background-color: #e74c3c;
-            box-shadow: 0 0 8px #e74c3c;
-            animation: blink 0.15s infinite alternate;
-        }
-
-        @keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
 
         .footer {
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
+            padding-bottom: 4px;
         }
 
         .tg-link {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 14px;
+            padding: 8px 16px;
             background-color: var(--panel-color);
             color: var(--text-color);
             text-decoration: none;
-            border-radius: 20px;
+            border-radius: 999px;
             border: 1px solid var(--border-color);
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 600;
+            transition: transform 0.15s, opacity 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
 
         .tg-link:active {
-            transform: scale(0.95);
-            opacity: 0.8;
-        }
-
-        .light-theme .tg-link {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transform: scale(0.96);
+            opacity: 0.85;
         }
     </style>
 </head>
-<body class="dark-theme">
+<body>
 
     <div class="header">
-        <button class="theme-btn active" id="darkBtn" onclick="setTheme('dark-theme')" title="Темная тема">🌙</button>
-        <button class="theme-btn" id="lightBtn" onclick="setTheme('light-theme')" title="Светлая тема">☀️</button>
-        <button class="theme-btn" id="iosBtn" onclick="setTheme('ios-theme')" title="iOS 26 стиль">🍎</button>
+        <div class="theme-switcher">
+            <button class="theme-btn active" id="darkBtn" onclick="setTheme('dark-theme')" title="Тёмная тема">🌙</button>
+            <button class="theme-btn" id="lightBtn" onclick="setTheme('light-theme')" title="Светлая тема">☀️</button>
+            <button class="theme-btn" id="iosBtn" onclick="setTheme('ios-theme')" title="iOS стиль">🍎</button>
+        </div>
+
+        <button class="sound-pill" id="soundBtn" aria-label="Звук" onclick="toggleSound()">
+            <span id="soundIcon">🔇</span>
+            <span id="soundLabel">Звук выкл</span>
+        </button>
     </div>
 
     <div class="main-container">
         <div class="device-container" id="device">
-            <div class="status-light" id="led"></div>
-            <h1>ZРАДА PRIBOR</h1>
-            <div class="subtitle"></div>
-            
-            <div class="gauge-wrapper">
-                <div class="gauge">
-                    <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
-                    <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
-                    <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
-                    
-                    <div class="needle" id="needle"></div>
+            <span class="screw tl"></span>
+            <span class="screw tr"></span>
+            <span class="screw bl"></span>
+            <span class="screw br"></span>
+
+            <div class="device-top">
+                <div class="status-light ready" id="led"></div>
+                <h1>ZРАДА PRIBOR</h1>
+            </div>
+            <div class="subtitle">Индикатор текущей обстановки</div>
+
+            <div class="gauge-bezel">
+                <div class="gauge-wrapper">
+                    <div class="gauge">
+                        <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
+                        <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
+                        <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
+
+                        <div class="needle" id="needle"></div>
+                    </div>
+                    <div class="needle-center"></div>
                 </div>
-                <div class="needle-center"></div>
+            </div>
+
+            <div class="display-box">
+                <div id="result-text">Готов к замеру</div>
             </div>
 
             <div class="controls">
-                <button class="sound-btn" id="soundBtn" aria-label="Звук" onclick="toggleSound()">🔇</button>
-                <button id="scanBtn" onclick="startAnalysis()">ЗАПУСТИТЬ</button>
+                <button id="scanBtn" onclick="startAnalysis()">ЗАМЕРИТЬ</button>
             </div>
-
-            <div id="result-text">Готов к работе</div>
         </div>
     </div>
 
@@ -465,7 +532,7 @@
     </div>
 
     <script>
-        document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
 
         const needle = document.getElementById('needle');
         const resultText = document.getElementById('result-text');
@@ -473,78 +540,28 @@
         const device = document.getElementById('device');
         const led = document.getElementById('led');
         const soundBtn = document.getElementById('soundBtn');
+        const soundIcon = document.getElementById('soundIcon');
+        const soundLabel = document.getElementById('soundLabel');
         const darkBtn = document.getElementById('darkBtn');
         const lightBtn = document.getElementById('lightBtn');
         const iosBtn = document.getElementById('iosBtn');
 
         let isSoundOn = false;
         let audioCtx = null;
-        let bgMusicGain = null;
-        let bgMusicOsc = null;
-        let currentTheme = 'dark-theme';
-        let ambientMusicEnabled = true;
-        let ambientOsc = null;
-        let ambientGain = null;
 
         function setTheme(theme) {
             document.documentElement.className = theme;
-            currentTheme = theme;
-            
             darkBtn.classList.toggle('active', theme === 'dark-theme');
             lightBtn.classList.toggle('active', theme === 'light-theme');
             iosBtn.classList.toggle('active', theme === 'ios-theme');
-            
-            // Обновляем фон при смене темы
-            if (bgEnabled) {
-                toggleBackground();
-                toggleBackground();
-            }
-            
             localStorage.setItem('zrada-theme', theme);
         }
 
-        function toggleBackground() {
-            const bgToggle = document.getElementById('bgToggle');
-            bgEnabled = !bgEnabled;
-            
-            if (bgEnabled) {
-                const gradients = {
-                    'dark-theme': 'linear-gradient(135deg, #0f0f1e 0%, #1a1a3e 50%, #16213e 100%)',
-                    'light-theme': 'linear-gradient(135deg, #f5f5f7 0%, #e8e8eb 50%, #d9d9dd 100%)',
-                    'ios-theme': 'linear-gradient(135deg, #000000 0%, #0a0e27 50%, #1a1a2e 100%)'
-                };
-                document.body.style.background = gradients[currentTheme];
-                document.body.style.backgroundSize = '400% 400%';
-                document.body.style.animation = 'gradientShift 15s ease infinite';
-                bgToggle.classList.add('active');
-            } else {
-                const colors = {
-                    'dark-theme': '#0f0f1e',
-                    'light-theme': '#f5f5f7',
-                    'ios-theme': '#000000'
-                };
-                document.body.style.background = colors[currentTheme];
-                document.body.style.animation = 'none';
-                bgToggle.classList.remove('active');
-            }
-            
-            localStorage.setItem('zrada-bg', bgEnabled);
-        }
-
-        // Загружаем сохраненные настройки при загрузке страницы
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
-            const savedBg = localStorage.getItem('zrada-bg') !== 'false';
-            
             setTheme(savedTheme);
-            
-            if (!savedBg) {
-                bgEnabled = true;
-                toggleBackground();
-            }
         });
 
-        // Инициализация AudioContext
         function initAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -555,171 +572,175 @@
             }
         }
 
-        function unlockAudio() {
-            if (!audioCtx) {
-                initAudio();
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                gain.gain.setValueAtTime(0.001, now);
-                osc.frequency.value = 100;
-                osc.start(now);
-                osc.stop(now + 0.05);
-            }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
         function toggleSound() {
-            unlockAudio();
+            initAudio();
             isSoundOn = !isSoundOn;
-            soundBtn.innerText = isSoundOn ? "🔊" : "🔇";
-            soundBtn.style.backgroundColor = isSoundOn ? "#2ecc71" : "#3498db";
-        }
-
-        function playBackgroundMusic() {
-            if (!isSoundOn || !audioCtx) return;
-
-            if (bgMusicOsc) {
-                bgMusicOsc.stop();
-                bgMusicGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            }
-
-            bgMusicOsc = audioCtx.createOscillator();
-            bgMusicGain = audioCtx.createGain();
-            bgMusicOsc.connect(bgMusicGain);
-            bgMusicGain.connect(audioCtx.destination);
-            bgMusicOsc.type = 'sine';
-            
-            const now = audioCtx.currentTime;
-            bgMusicGain.gain.setValueAtTime(0.08, now);
-            
-            const notes = [220, 247, 277, 294, 330, 370, 415, 440];
-            let time = now;
-            
-            for (let i = 0; i < 12; i++) {
-                const freq = notes[Math.floor(Math.random() * notes.length)];
-                bgMusicOsc.frequency.setTargetAtTime(freq, time, 0.05);
-                time += 0.2;
-            }
-            
-            bgMusicOsc.start(now);
-            bgMusicGain.gain.setTargetAtTime(0, now + 2.4, 0.1);
-            bgMusicOsc.stop(now + 2.5);
+            soundIcon.innerText = isSoundOn ? "🔊" : "🔇";
+            soundLabel.innerText = isSoundOn ? "Звук вкл" : "Звук выкл";
+            soundBtn.classList.toggle('active', isSoundOn);
+            if (isSoundOn) playTone('click');
         }
 
         function playTone(type) {
             if (!isSoundOn || !audioCtx) return;
-
             const now = audioCtx.currentTime;
-            
-            if (type === 'tick') {
+
+            if (type === 'click') {
+                // Механический щелчок тумблера
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(950, now);
+                osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+                gain.gain.setValueAtTime(0.14, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(200 + Math.random() * 100, now);
-                gain.gain.setValueAtTime(0.06, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 osc.start(now);
-                osc.stop(now + 0.08);
-            } 
+                osc.stop(now + 0.035);
+            }
+            else if (type === 'tick') {
+                // Короткий треск счётчика Гейгера (фильтр + шум)
+                const bufferSize = Math.floor(audioCtx.sampleRate * 0.018);
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1800 + Math.random() * 900;
+                filter.Q.value = 3;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.22, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start(now);
+            }
             else if (type === 'peremoga') {
-                const playNote = (f, d) => {
-                    const o = audioCtx.createOscillator();
-                    const g = audioCtx.createGain();
-                    o.connect(g);
-                    g.connect(audioCtx.destination);
-                    o.type = 'triangle';
-                    o.frequency.value = f;
-                    g.gain.setValueAtTime(0.15, now + d);
-                    g.gain.linearRampToValueAtTime(0, now + d + 0.35);
-                    o.start(now + d);
-                    o.stop(now + d + 0.35);
-                };
-                playNote(523.25, 0);
-                playNote(659.25, 0.15);
-                playNote(783.99, 0.3);
-                playNote(1046.50, 0.5);
-            } 
+                // Мягкий мажорный аккорд-фанфара
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const start = now + idx * 0.09;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, start);
+                    gain.gain.setValueAtTime(0.001, start);
+                    gain.gain.linearRampToValueAtTime(0.13, start + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(start);
+                    osc.stop(start + 0.45);
+                });
+            }
             else if (type === 'zrada') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(700, now);
-                osc.frequency.linearRampToValueAtTime(300, now + 0.3);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
-            } 
+                // Двойной тревожный зуммер
+                [0, 0.16].forEach((offset) => {
+                    const start = now + offset;
+                    const osc = audioCtx.createOscillator();
+                    const filter = audioCtx.createBiquadFilter();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(520, start);
+                    osc.frequency.linearRampToValueAtTime(410, start + 0.12);
+
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 1400;
+
+                    gain.gain.setValueAtTime(0.12, start);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.13);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(start);
+                    osc.stop(start + 0.13);
+                });
+            }
             else if (type === 'zadnitsa') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, now);
-                osc.frequency.exponentialRampToValueAtTime(50, now + 0.7);
-                gain.gain.setValueAtTime(0.25, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.7);
-                osc.start(now);
-                osc.stop(now + 0.7);
+                // Грустный нисходящий тромбон
+                const steps = [196.00, 185.00, 174.61, 164.81];
+                steps.forEach((freq, idx) => {
+                    const start = now + idx * 0.18;
+                    const dur = idx === 3 ? 0.55 : 0.17;
+                    const osc = audioCtx.createOscillator();
+                    const filter = audioCtx.createBiquadFilter();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, start);
+                    if (idx === 3) {
+                        osc.frequency.linearRampToValueAtTime(138.59, start + dur);
+                    }
+
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 750;
+
+                    gain.gain.setValueAtTime(0.14, start);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(start);
+                    osc.stop(start + dur);
+                });
             }
         }
 
         function startAnalysis() {
-            unlockAudio();
+            initAudio();
+            playTone('click');
 
             scanBtn.disabled = true;
-            scanBtn.innerText = "⏳...";
-            resultText.innerText = "АНАЛИЗ ДАННЫХ";
-            
+            scanBtn.innerText = "СКАНИРУЮ...";
+            resultText.innerText = "ИДЁТ ЗАМЕР...";
+            resultText.style.color = "var(--text-color)";
+
             device.classList.add('shaking');
-            led.classList.add('active');
-            
+            led.classList.remove('ready');
+            led.classList.add('scanning');
+
             needle.style.transition = "none";
-            
-            if (isSoundOn) playBackgroundMusic();
 
             let scanSteps = 0;
-            const maxSteps = 35;
+            const maxSteps = 32;
 
             const interval = setInterval(() => {
-                const randomAngle = Math.floor(Math.random() * 180) - 90;
+                const randomAngle = Math.floor(Math.random() * 176) - 88;
                 needle.style.transform = `rotate(${randomAngle}deg)`;
-                
-                if (scanSteps % 3 === 0) playTone('tick');
-                if (navigator.vibrate) navigator.vibrate(8);
+
+                if (scanSteps % 2 === 0) playTone('tick');
+                if (navigator.vibrate) navigator.vibrate(6);
 
                 scanSteps++;
                 if (scanSteps >= maxSteps) finishAnalysis(interval);
-            }, 60);
+            }, 55);
         }
 
         function finishAnalysis(interval) {
             clearInterval(interval);
             device.classList.remove('shaking');
-            led.classList.remove('active');
+            led.classList.remove('scanning');
+            led.classList.add('ready');
 
-            if (bgMusicOsc) {
-                bgMusicOsc.stop();
-                bgMusicGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            }
+            const finalAngle = Math.floor(Math.random() * 176) - 88;
+            needle.style.transition = "transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)";
 
-            const finalAngle = Math.floor(Math.random() * 180) - 90;
-            needle.style.transition = "transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)"; 
-            
             setTimeout(() => {
                 needle.style.transform = `rotate(${finalAngle}deg)`;
                 showResult(finalAngle);
-            }, 50);
+            }, 40);
         }
 
         function showResult(angle) {
@@ -729,44 +750,30 @@
                 let soundType = "";
 
                 if (angle <= -30) {
-                    text = "ЕСТЬ ПЕРЕМОГА! 🎉😎🚀";
-                    color = "#2ecc71";
+                    text = "ЕСТЬ ПЕРЕМОГА! 😎🎉";
+                    color = "var(--peremoga)";
                     soundType = "peremoga";
                 } else if (angle > -30 && angle < 30) {
-                    text = "ZРАДА!!!! 😱💥🔥";
-                    color = "#e74c3c";
+                    text = "ТРЕВОГА: ZРАДА! 😱🔥";
+                    color = "var(--zrada)";
                     soundType = "zrada";
                 } else {
-                    text = "ПОЛНАЯ ЗАДНИЦА 🍑😩💀";
-                    color = "#d35400";
+                    text = "ПОЛНАЯ ЗАДНИЦА 🍑💀";
+                    color = "#e67e22";
                     soundType = "zadnitsa";
                 }
 
                 resultText.innerText = text;
                 resultText.style.color = color;
                 playTone(soundType);
-                
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+                if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
 
                 scanBtn.disabled = false;
-                scanBtn.innerText = "ЗАПУСТИТЬ";
-            }, 700);
+                scanBtn.innerText = "ЗАМЕРИТЬ ЕЩЁ РАЗ";
+            }, 650);
         }
-
-        // Загружаем сохраненные настройки при загрузке страницы
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
-            const savedAmbient = localStorage.getItem('zrada-ambient') !== 'false';
-            
-            setTheme(savedTheme);
-            
-            if (savedAmbient) {
-                ambientMusicEnabled = true;
-                document.getElementById('musicToggle').classList.add('active');
-                startAmbientMusic();
-            }
-        });
     </script>
 </body>
 </html>
-
+Выполняю анализ
