@@ -1,779 +1,1940 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark-theme">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Зрада Прибор | Анализатор</title>
-    <meta name="description" content="Узнай судьбу: Перемога, Зрада или Полная Задница?">
+    <title>Зрада Прибор — Анализатор</title>
+    <meta name="description" content="Точный индикатор текущей обстановки: Перемога, Зрада или Полная Задница.">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1e272e">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+    <meta name="theme-color" id="theme-color-meta" content="#06080f">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2218%22 fill=%22%230b101b%22/><path d=%22M12 42 A20 20 0 0 1 52 42%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%224%22 stroke-linecap=%22round%22/><path d=%22M32 42 L43 22%22 stroke=%22%23ff453a%22 stroke-width=%224%22 stroke-linecap=%22round%22/><circle cx=%2232%22 cy=%2242%22 r=%224%22 fill=%22%23ffffff%22/></svg>">
 
     <style>
-        :root.dark-theme {
-            --bg-color: #161b22;
-            --bg-radial: radial-gradient(circle at 50% 30%, #242d38 0%, #11151a 100%);
-            --panel-color: #212832;
-            --panel-inner: #181d24;
-            --text-color: #f0f6fc;
-            --muted-text: #8b949e;
-            --accent: #f1c40f;
-            --accent-shadow: #b7950b;
-            --peremoga: #2ecc71;
-            --zrada: #e74c3c;
-            --zadnitsa: #795548;
-            --border-color: #30363d;
-            --screw-color: #484f58;
-            --glass-sheen: rgba(255, 255, 255, 0.08);
+        /* =========================================================
+           СИСТЕМА ТЕМ: ЖИДКОЕ СТЕКЛО (НОЧЬ / ХРУСТАЛЬ / ПРИЗМА)
+           ========================================================= */
+        :root,
+        html[data-theme="dark"] {
+            --bg-base: #06080f;
+            --orb-1: rgba(37, 99, 235, 0.55);
+            --orb-2: rgba(124, 58, 237, 0.45);
+            --orb-3: rgba(14, 165, 233, 0.36);
+            --grid-line: rgba(255, 255, 255, 0.045);
+
+            --glass-fill: rgba(18, 24, 38, 0.38);
+            --glass-fill-subtle: rgba(24, 32, 48, 0.30);
+            --glass-rim-bright: rgba(255, 255, 255, 0.62);
+            --glass-rim-mid: rgba(255, 255, 255, 0.12);
+            --glass-rim-bounce: rgba(255, 255, 255, 0.30);
+            --glass-inner-top: rgba(255, 255, 255, 0.34);
+            --glass-inner-bot: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 28px 70px rgba(0, 0, 0, 0.62), 0 4px 18px rgba(0, 0, 0, 0.36);
+            --specular-spot: rgba(255, 255, 255, 0.16);
+
+            --seg-thumb-bg: rgba(255, 255, 255, 0.18);
+            --seg-thumb-border: rgba(255, 255, 255, 0.38);
+
+            --dial-bg: rgba(6, 10, 18, 0.62);
+            --dial-ring: rgba(255, 255, 255, 0.14);
+            --dial-tick: rgba(255, 255, 255, 0.38);
+            --dial-tick-major: rgba(255, 255, 255, 0.85);
+            --dial-label: rgba(255, 255, 255, 0.92);
+            --needle-shaft: #f1f5f9;
+            --needle-shaft-dark: #94a3b8;
+            --needle-tip: #ff453a;
+
+            --readout-bg: rgba(8, 12, 22, 0.42);
+            --text-primary: #f8fafc;
+            --text-secondary: rgba(248, 250, 252, 0.64);
+            --text-muted: rgba(248, 250, 252, 0.42);
+
+            --btn-glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.09) 100%);
+            --btn-glass-hover: linear-gradient(165deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.13) 100%);
+            --btn-text: #ffffff;
+
+            --zone-peremoga: #34d399;
+            --zone-zrada: #fb7185;
+            --zone-zadnitsa: #f59e0b;
         }
 
-        :root.light-theme {
-            --bg-color: #e5e7eb;
-            --bg-radial: radial-gradient(circle at 50% 30%, #f9fafb 0%, #d1d5db 100%);
-            --panel-color: #ffffff;
-            --panel-inner: #f3f4f6;
-            --text-color: #111827;
-            --muted-text: #6b7280;
-            --accent: #f59e0b;
-            --accent-shadow: #b45309;
-            --peremoga: #10b981;
-            --zrada: #ef4444;
-            --zadnitsa: #8d6e63;
-            --border-color: #d1d5db;
-            --screw-color: #9ca3af;
-            --glass-sheen: rgba(255, 255, 255, 0.55);
+        html[data-theme="light"] {
+            --bg-base: #dde7f3;
+            --orb-1: rgba(56, 189, 248, 0.55);
+            --orb-2: rgba(167, 139, 250, 0.46);
+            --orb-3: rgba(96, 165, 250, 0.42);
+            --grid-line: rgba(15, 23, 42, 0.045);
+
+            --glass-fill: rgba(255, 255, 255, 0.42);
+            --glass-fill-subtle: rgba(255, 255, 255, 0.34);
+            --glass-rim-bright: rgba(255, 255, 255, 0.95);
+            --glass-rim-mid: rgba(255, 255, 255, 0.38);
+            --glass-rim-bounce: rgba(255, 255, 255, 0.78);
+            --glass-inner-top: rgba(255, 255, 255, 0.90);
+            --glass-inner-bot: rgba(148, 163, 184, 0.22);
+            --glass-shadow: 0 24px 60px rgba(30, 41, 59, 0.16), 0 4px 16px rgba(30, 41, 59, 0.08);
+            --specular-spot: rgba(255, 255, 255, 0.50);
+
+            --seg-thumb-bg: rgba(255, 255, 255, 0.72);
+            --seg-thumb-border: rgba(255, 255, 255, 0.98);
+
+            --dial-bg: rgba(244, 248, 255, 0.58);
+            --dial-ring: rgba(15, 23, 42, 0.14);
+            --dial-tick: rgba(15, 23, 42, 0.34);
+            --dial-tick-major: rgba(15, 23, 42, 0.80);
+            --dial-label: rgba(15, 23, 42, 0.88);
+            --needle-shaft: #1e293b;
+            --needle-shaft-dark: #475569;
+            --needle-tip: #e11d48;
+
+            --readout-bg: rgba(255, 255, 255, 0.45);
+            --text-primary: #0f172a;
+            --text-secondary: rgba(15, 23, 42, 0.66);
+            --text-muted: rgba(15, 23, 42, 0.45);
+
+            --btn-glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.46) 100%);
+            --btn-glass-hover: linear-gradient(165deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.58) 100%);
+            --btn-text: #0f172a;
+
+            --zone-peremoga: #059669;
+            --zone-zrada: #e11d48;
+            --zone-zadnitsa: #b45309;
         }
 
-        :root.ios-theme {
-            --bg-color: #000000;
-            --bg-radial: radial-gradient(circle at 50% 20%, #1c1c1e 0%, #000000 100%);
-            --panel-color: rgba(28, 28, 30, 0.78);
-            --panel-inner: rgba(44, 44, 46, 0.65);
-            --text-color: #ffffff;
-            --muted-text: #98989d;
-            --accent: #0a84ff;
-            --accent-shadow: #005bb5;
-            --peremoga: #30d158;
-            --zrada: #ff453a;
-            --zadnitsa: #ac8e68;
-            --border-color: rgba(255, 255, 255, 0.16);
-            --screw-color: rgba(255, 255, 255, 0.25);
-            --glass-sheen: rgba(255, 255, 255, 0.12);
+        html[data-theme="prism"] {
+            --bg-base: #070510;
+            --orb-1: rgba(16, 185, 129, 0.50);
+            --orb-2: rgba(236, 72, 153, 0.45);
+            --orb-3: rgba(56, 189, 248, 0.50);
+            --grid-line: rgba(255, 255, 255, 0.06);
+
+            --glass-fill: rgba(255, 255, 255, 0.075);
+            --glass-fill-subtle: rgba(255, 255, 255, 0.055);
+            --glass-rim-bright: rgba(255, 255, 255, 0.75);
+            --glass-rim-mid: rgba(186, 230, 253, 0.22);
+            --glass-rim-bounce: rgba(244, 114, 182, 0.45);
+            --glass-inner-top: rgba(255, 255, 255, 0.42);
+            --glass-inner-bot: rgba(56, 189, 248, 0.14);
+            --glass-shadow: 0 30px 75px rgba(0, 0, 0, 0.65), 0 0 40px rgba(56, 189, 248, 0.10);
+            --specular-spot: rgba(255, 255, 255, 0.20);
+
+            --seg-thumb-bg: rgba(255, 255, 255, 0.16);
+            --seg-thumb-border: rgba(255, 255, 255, 0.46);
+
+            --dial-bg: rgba(10, 8, 22, 0.52);
+            --dial-ring: rgba(255, 255, 255, 0.18);
+            --dial-tick: rgba(255, 255, 255, 0.42);
+            --dial-tick-major: rgba(255, 255, 255, 0.90);
+            --dial-label: rgba(255, 255, 255, 0.95);
+            --needle-shaft: #ffffff;
+            --needle-shaft-dark: #cbd5e1;
+            --needle-tip: #ff3b30;
+
+            --readout-bg: rgba(12, 10, 26, 0.36);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.68);
+            --text-muted: rgba(255, 255, 255, 0.45);
+
+            --btn-glass-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 100%);
+            --btn-glass-hover: linear-gradient(155deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.10) 100%);
+            --btn-text: #ffffff;
+
+            --zone-peremoga: #34d399;
+            --zone-zrada: #fb7185;
+            --zone-zadnitsa: #fbbf24;
+        }
+
+        /* Адаптация света сцены под результат замера */
+        body[data-verdict="peremoga"] {
+            --orb-1: rgba(16, 185, 129, 0.66);
+            --orb-2: rgba(52, 211, 153, 0.44);
+            --orb-3: rgba(14, 165, 233, 0.42);
+        }
+
+        body[data-verdict="zrada"] {
+            --orb-1: rgba(239, 68, 68, 0.66);
+            --orb-2: rgba(244, 63, 94, 0.48);
+            --orb-3: rgba(185, 28, 28, 0.42);
+        }
+
+        body[data-verdict="zadnitsa"] {
+            --orb-1: rgba(217, 119, 6, 0.64);
+            --orb-2: rgba(180, 83, 9, 0.52);
+            --orb-3: rgba(234, 88, 12, 0.42);
         }
 
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100dvh;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: background-color 0.5s ease, color 0.35s ease;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-radial);
-            background-color: var(--bg-color);
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            min-height: 100dvh;
-            margin: 0;
-            padding: env(safe-area-inset-top, 12px) 16px env(safe-area-inset-bottom, 12px);
-            color: var(--text-color);
-            user-select: none;
-            -webkit-user-select: none;
+            padding: max(14px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+            gap: 14px;
+        }
+
+        /* =========================================================
+           ЖИВОЙ ФОН ДЛЯ РЕАЛЬНОГО ПРЕЛОМЛЕНИЯ ЧЕРЕЗ СТЕКЛО
+           ========================================================= */
+        .ambient-scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
             overflow: hidden;
-            touch-action: manipulation;
-            transition: background 0.3s, color 0.3s;
         }
 
-        .header {
-            width: 100%;
-            max-width: 440px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 4px;
-            z-index: 10;
-        }
-
-        .theme-switcher {
-            display: flex;
-            gap: 6px;
-            background: var(--panel-color);
-            padding: 4px;
-            border-radius: 999px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .theme-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: var(--text-color);
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s, transform 0.15s;
-            box-shadow: none;
-            padding: 0;
-        }
-
-        .theme-btn:hover {
-            transform: scale(1.06);
-        }
-
-        .theme-btn.active {
-            background-color: var(--accent);
-            color: #111;
-        }
-
-        .ios-theme .theme-btn.active {
-            color: #fff;
-        }
-
-        .sound-pill {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            height: 42px;
-            padding: 0 14px;
-            border-radius: 999px;
-            border: 1px solid var(--border-color);
-            background: var(--panel-color);
-            color: var(--text-color);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s;
-        }
-
-        .sound-pill.active {
-            border-color: var(--peremoga);
-            color: var(--peremoga);
-        }
-
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            flex: 1;
-        }
-
-        .device-container {
-            background-color: var(--panel-color);
-            padding: 28px 24px 24px;
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            text-align: center;
-            width: 100%;
-            max-width: 440px;
-            border: 2px solid var(--border-color);
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .ios-theme .device-container {
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-        }
-
-        /* Декоративные винты корпуса */
-        .screw {
+        .ambient-grid {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--screw-color);
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+            inset: -20%;
+            background-image:
+                linear-gradient(125deg, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(35deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 56px 56px;
+            opacity: 0.9;
+            transform: rotate(-4deg);
         }
-        .screw::after {
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(72px);
+            will-change: transform;
+            transition: background 1.1s ease;
+        }
+
+        .orb-1 {
+            width: min(76vw, 480px);
+            height: min(76vw, 480px);
+            top: -12%;
+            left: -10%;
+            background: radial-gradient(circle, var(--orb-1) 0%, transparent 72%);
+            animation: driftA 20s ease-in-out infinite alternate;
+        }
+
+        .orb-2 {
+            width: min(82vw, 520px);
+            height: min(82vw, 520px);
+            bottom: -14%;
+            right: -12%;
+            background: radial-gradient(circle, var(--orb-2) 0%, transparent 72%);
+            animation: driftB 24s ease-in-out infinite alternate;
+        }
+
+        .orb-3 {
+            width: min(64vw, 380px);
+            height: min(64vw, 380px);
+            top: 38%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--orb-3) 0%, transparent 70%);
+            animation: driftC 17s ease-in-out infinite alternate;
+        }
+
+        /* Деликатные световые ленты за стеклом, чтобы оптически изгибались на краях */
+        .ambient-ribbon {
+            position: absolute;
+            width: 140%;
+            height: 160px;
+            left: -20%;
+            top: 44%;
+            background: linear-gradient(90deg, transparent 0%, var(--orb-3) 35%, var(--orb-2) 65%, transparent 100%);
+            filter: blur(42px);
+            opacity: 0.45;
+            transform: rotate(-16deg);
+            transition: background 1.1s ease;
+        }
+
+        @keyframes driftA {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(12%, 14%) scale(1.12); }
+        }
+
+        @keyframes driftB {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-14%, -10%) scale(1.15); }
+        }
+
+        @keyframes driftC {
+            0% { transform: translate(-55%, -55%) scale(0.95); }
+            100% { transform: translate(-42%, -45%) scale(1.18); }
+        }
+
+        /* =========================================================
+           СИСТЕМА НАСТОЯЩЕГО LIQUID GLASS
+           ========================================================= */
+        .liquid-glass {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.25s cubic-bezier(0.22, 1.4, 0.36, 1), box-shadow 0.4s ease;
+        }
+
+        /* Базовый матово-жидкий оптический слой (Safari / Firefox / Chrome) */
+        .glass-backdrop {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            z-index: -3;
+            background: var(--glass-fill);
+            -webkit-backdrop-filter: blur(30px) saturate(195%) contrast(1.04);
+            backdrop-filter: blur(30px) saturate(195%) contrast(1.04);
+            pointer-events: none;
+            transition: background 0.35s ease;
+        }
+
+        .liquid-glass.glass-subtle .glass-backdrop {
+            background: var(--glass-fill-subtle);
+            -webkit-backdrop-filter: blur(24px) saturate(185%);
+            backdrop-filter: blur(24px) saturate(185%);
+        }
+
+        /* Истинное SVG-преломление для браузеров с поддержкой url() в backdrop-filter */
+        html.has-svg-refract .glass-backdrop {
+            inset: -16px;
+            backdrop-filter: url(#liquid-refract) blur(22px) saturate(205%) brightness(1.05);
+        }
+
+        /* Внутренняя каустика и блик стекла */
+        .glass-specular {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(
+                    320px circle at var(--gx, 28%) var(--gy, 18%),
+                    var(--specular-spot) 0%,
+                    transparent 68%
+                ),
+                linear-gradient(
+                    165deg,
+                    rgba(255, 255, 255, 0.16) 0%,
+                    rgba(255, 255, 255, 0.03) 40%,
+                    rgba(255, 255, 255, 0.00) 68%,
+                    rgba(255, 255, 255, 0.06) 100%
+                );
+            box-shadow:
+                inset 0 1.5px 1px var(--glass-inner-top),
+                inset 0 -1.5px 2px var(--glass-inner-bot),
+                inset 0 14px 28px rgba(255, 255, 255, 0.04);
+        }
+
+        /* Изогнутая стеклянная фаска (обод преломления по контуру) */
+        .liquid-glass::after {
             content: "";
             position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.25px;
+            background: linear-gradient(
+                var(--rim-angle, 138deg),
+                var(--glass-rim-bright) 0%,
+                var(--glass-rim-mid) 36%,
+                rgba(255, 255, 255, 0.03) 64%,
+                var(--glass-rim-bounce) 100%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Режим доступности: снижение прозрачности */
+        @media (prefers-reduced-transparency: reduce) {
+            .glass-backdrop {
+                -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
+                background: var(--bg-base) !important;
+                opacity: 0.96;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ambient-orb { animation: none !important; }
+        }
+
+        /* =========================================================
+           ВЕРХНЯЯ ПАНЕЛЬ (СЕГМЕНТНЫЙ ПЕРЕКЛЮЧАТЕЛЬ + ЗВУК)
+           ========================================================= */
+        .topbar {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .seg-control {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 4px;
+            border-radius: 999px;
+            width: 148px;
+            height: 44px;
+        }
+
+        .seg-thumb {
+            position: absolute;
             top: 4px;
-            left: 2px;
-            right: 2px;
-            height: 1.5px;
-            background: rgba(0,0,0,0.45);
-            transform: rotate(35deg);
-        }
-        .screw.tl { top: 14px; left: 14px; }
-        .screw.tr { top: 14px; right: 14px; }
-        .screw.bl { bottom: 14px; left: 14px; }
-        .screw.br { bottom: 14px; right: 14px; }
-
-        .shaking {
-            animation: shake 0.4s infinite;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-2px, 1px) rotate(-0.6deg); }
-            50% { transform: translate(2px, -1px) rotate(0.6deg); }
-            75% { transform: translate(-1px, -1px) rotate(0.3deg); }
+            left: 4px;
+            width: calc((100% - 8px) / 3);
+            height: calc(100% - 8px);
+            border-radius: 999px;
+            background: var(--seg-thumb-bg);
+            border: 1px solid var(--seg-thumb-border);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.45),
+                0 2px 10px rgba(0, 0, 0, 0.16);
+            transform: translateX(calc(var(--seg-idx, 0) * 100%));
+            transition: transform 0.42s cubic-bezier(0.32, 1.35, 0.56, 1), background 0.3s ease;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .device-top {
+        .seg-btn {
+            position: relative;
+            z-index: 1;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 999px;
+            transition: color 0.25s ease, transform 0.15s ease;
+        }
+
+        .seg-btn[aria-pressed="true"] {
+            color: var(--text-primary);
+        }
+
+        .seg-btn:active {
+            transform: scale(0.9);
+        }
+
+        .seg-btn svg {
+            width: 17px;
+            height: 17px;
+            display: block;
+        }
+
+        .sound-btn {
+            height: 44px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            transition: color 0.25s ease, transform 0.18s cubic-bezier(0.22, 1.4, 0.36, 1);
+        }
+
+        .sound-btn:active {
+            transform: scale(0.94);
+        }
+
+        .sound-btn.active {
+            color: var(--text-primary);
+        }
+
+        .sound-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .sound-btn.active .sound-dot {
+            background: var(--zone-peremoga);
+            box-shadow: 0 0 8px var(--zone-peremoga);
+        }
+
+        .sound-icon {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+        }
+
+        /* =========================================================
+           ГЛАВНЫЙ ПРИБОР (СКУЛЬПТУРНЫЙ КОРПУС ИЗ ЖИДКОГО СТЕКЛА)
+           ========================================================= */
+        .main-stage {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 430px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .instrument {
+            width: 100%;
+            border-radius: 36px;
+            padding: 22px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .instrument.scanning-shake {
+            animation: microVibe 0.16s infinite alternate ease-in-out;
+        }
+
+        @keyframes microVibe {
+            0% { transform: translate(-0.8px, 0.5px) rotate(-0.18deg); }
+            100% { transform: translate(0.8px, -0.5px) rotate(0.18deg); }
+        }
+
+        .inst-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0 4px;
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-align: left;
+        }
+
+        .status-led {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--zone-peremoga);
+            box-shadow: 0 0 10px var(--zone-peremoga);
+            flex-shrink: 0;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .status-led.scanning {
+            background: var(--zone-zrada);
+            box-shadow: 0 0 14px var(--zone-zrada);
+            animation: ledPulse 0.16s infinite alternate;
+        }
+
+        @keyframes ledPulse {
+            from { opacity: 0.45; transform: scale(0.88); }
+            to { opacity: 1; transform: scale(1.12); }
+        }
+
+        .brand-titles {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .brand-name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: 0.06em;
+            line-height: 1.15;
+            color: var(--text-primary);
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+        }
+
+        /* Мини-лента последних замеров */
+        .history-track {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: var(--readout-bg);
+            border: 1px solid var(--dial-ring);
+            min-height: 22px;
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .history-track.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .history-pip {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            transition: transform 0.25s cubic-bezier(0.22, 1.4, 0.36, 1);
+            animation: pipPop 0.32s cubic-bezier(0.22, 1.4, 0.36, 1);
+        }
+
+        @keyframes pipPop {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .history-pip[data-zone="peremoga"] {
+            background: var(--zone-peremoga);
+            box-shadow: 0 0 6px var(--zone-peremoga);
+        }
+        .history-pip[data-zone="zrada"] {
+            background: var(--zone-zrada);
+            box-shadow: 0 0 6px var(--zone-zrada);
+        }
+        .history-pip[data-zone="zadnitsa"] {
+            background: var(--zone-zadnitsa);
+            box-shadow: 0 0 6px var(--zone-zadnitsa);
+        }
+
+        /* =========================================================
+           ОПТИЧЕСКАЯ КАМЕРА ЦИФЕРБЛАТА (SVG + ВЫПУКЛОЕ СТЕКЛО)
+           ========================================================= */
+        .dial-chamber {
+            position: relative;
+            border-radius: 26px;
+            background: var(--dial-bg);
+            border: 1px solid var(--dial-ring);
+            padding: 12px 10px 8px;
+            overflow: hidden;
+            box-shadow:
+                inset 0 6px 22px rgba(0, 0, 0, 0.28),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+            transition: background 0.35s ease, border-color 0.35s ease;
+        }
+
+        .dial-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        .dial-sector {
+            opacity: 0.24;
+            transition: opacity 0.45s ease, filter 0.45s ease;
+        }
+
+        html[data-theme="light"] .dial-sector {
+            opacity: 0.28;
+        }
+
+        .dial-sector.active {
+            opacity: 0.72;
+            filter: drop-shadow(0 0 12px currentColor);
+        }
+
+        html[data-theme="light"] .dial-sector.active {
+            opacity: 0.56;
+        }
+
+        .dial-sector-label {
+            font-size: 9.8px;
+            font-weight: 750;
+            letter-spacing: 1.9px;
+            fill: var(--dial-label);
+            opacity: 0.78;
+            transition: opacity 0.35s ease, fill 0.35s ease;
+        }
+
+        .dial-sector-label.active {
+            opacity: 1;
+        }
+
+        /* Сапфировый купол поверх шкалы */
+        .dial-lens {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 85% 58% at 50% 8%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 42%, transparent 72%),
+                linear-gradient(155deg, rgba(255, 255, 255, 0.14) 0%, transparent 32%);
+            box-shadow:
+                inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
+                inset 0 -10px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        /* =========================================================
+           КАПСУЛА РЕЗУЛЬТАТА
+           ========================================================= */
+        .readout-capsule {
+            position: relative;
+            border-radius: 22px;
+            background: var(--readout-bg);
+            border: 1px solid var(--dial-ring);
+            padding: 13px 16px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.16);
+            transition: background 0.35s ease, border-color 0.35s ease;
+        }
+
+        .readout-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .telemetry-pill {
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--dial-ring);
+            color: var(--text-secondary);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        html[data-theme="light"] .telemetry-pill {
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        .verdict-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.18;
+            color: var(--text-primary);
+            transition: color 0.35s ease, transform 0.35s cubic-bezier(0.22, 1.4, 0.36, 1);
+        }
+
+        .verdict-title.pop {
+            animation: textPop 0.38s cubic-bezier(0.22, 1.4, 0.36, 1);
+        }
+
+        @keyframes textPop {
+            0% { transform: translateY(4px) scale(0.97); opacity: 0.65; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .verdict-sub {
+            font-size: 13px;
+            font-weight: 450;
+            line-height: 1.35;
+            color: var(--text-secondary);
+            min-height: 18px;
+        }
+
+        /* =========================================================
+           ГЛАВНАЯ СТЕКЛЯННАЯ КНОПКА ЗАПУСКА
+           ========================================================= */
+        .action-btn {
+            position: relative;
+            width: 100%;
+            height: 56px;
+            border: none;
+            border-radius: 20px;
+            background: var(--btn-glass-bg);
+            color: var(--btn-text);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 4px;
+            box-shadow:
+                inset 0 1.5px 1px var(--glass-inner-top),
+                inset 0 -1.5px 2px var(--glass-inner-bot),
+                0 10px 26px rgba(0, 0, 0, 0.25);
+            transition:
+                transform 0.18s cubic-bezier(0.22, 1.4, 0.36, 1),
+                background 0.25s ease,
+                box-shadow 0.25s ease,
+                opacity 0.25s ease;
         }
 
-        .status-light {
-            width: 10px;
-            height: 10px;
-            background-color: #4b5563;
-            border-radius: 50%;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
-            transition: all 0.25s;
-        }
-
-        .status-light.ready {
-            background-color: var(--peremoga);
-            box-shadow: 0 0 8px var(--peremoga);
-        }
-
-        .status-light.scanning {
-            background-color: var(--zrada);
-            box-shadow: 0 0 10px var(--zrada);
-            animation: blink 0.14s infinite alternate;
-        }
-
-        @keyframes blink {
-            from { opacity: 0.4; }
-            to { opacity: 1; }
-        }
-
-        h1 {
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 24px;
-            font-weight: 800;
-        }
-
-        .subtitle {
-            font-size: 11px;
-            color: var(--muted-text);
-            margin-bottom: 18px;
-            text-transform: uppercase;
-            letter-spacing: 1.4px;
-            font-weight: 600;
-        }
-
-        .gauge-bezel {
-            background: var(--panel-inner);
-            padding: 14px 14px 10px;
-            border-radius: 22px;
-            border: 1px solid var(--border-color);
-            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.35);
-        }
-
-        .gauge-wrapper {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 50%;
-            overflow: hidden;
-        }
-
-        .gauge {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 500px 500px 0 0;
-            background: conic-gradient(
-                from 270deg at 50% 100%,
-                var(--peremoga) 0deg 60deg,
-                var(--zrada) 60deg 120deg,
-                var(--zadnitsa) 120deg 180deg
-            );
-            box-shadow: inset 0 4px 18px rgba(0, 0, 0, 0.55);
-            border: 2px solid var(--border-color);
-            border-bottom: none;
-        }
-
-        /* Деления шкалы и блик стекла */
-        .gauge::before {
+        .action-btn::before {
             content: "";
             position: absolute;
             inset: 0;
-            border-radius: 500px 500px 0 0;
-            background: repeating-conic-gradient(
-                from 270deg at 50% 100%,
-                rgba(0, 0, 0, 0.35) 0deg 1.5deg,
-                transparent 1.5deg 15deg
-            );
-            -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 78%, black 79%);
-            mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 78%, black 79%);
+            border-radius: inherit;
+            padding: 1.2px;
+            background: linear-gradient(150deg, var(--glass-rim-bright) 0%, var(--glass-rim-mid) 45%, var(--glass-rim-bounce) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
             pointer-events: none;
         }
 
-        .gauge::after {
+        .action-btn::after {
             content: "";
             position: absolute;
-            top: 4%;
-            left: 12%;
-            right: 12%;
-            height: 42%;
-            border-radius: 500px 500px 40px 40px;
-            background: linear-gradient(180deg, var(--glass-sheen) 0%, transparent 100%);
+            top: -50%;
+            left: -75%;
+            width: 55%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.30), transparent);
+            transform: rotate(24deg);
+            transition: left 0.6s ease;
             pointer-events: none;
         }
 
-        .label {
-            position: absolute;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.4px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-            z-index: 2;
-            text-transform: uppercase;
-            color: #fff;
+        .action-btn:hover:not(:disabled) {
+            background: var(--btn-glass-hover);
         }
 
-        @media (max-width: 360px) {
-            .label { font-size: 9.5px; }
+        .action-btn:hover:not(:disabled)::after {
+            left: 130%;
         }
 
-        .label-peremoga { bottom: 12%; left: 6%; }
-        .label-zrada { top: 18%; left: 50%; transform: translateX(-50%); }
-        .label-zadnitsa { bottom: 12%; right: 6%; }
-
-        .emoji {
-            font-size: 18px;
-            display: block;
-            text-align: center;
-            margin-bottom: 2px;
+        .action-btn:active:not(:disabled) {
+            transform: scale(0.968);
         }
 
-        .needle {
-            width: 4px;
-            height: 86%;
-            background: linear-gradient(180deg, #ff3b30 0%, var(--text-color) 35%);
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            transform-origin: bottom center;
-            transform: rotate(0deg);
-            z-index: 10;
-            border-radius: 4px 4px 0 0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-            will-change: transform;
+        .action-btn:disabled {
+            opacity: 0.62;
+            cursor: default;
         }
 
-        .needle-center {
-            width: 22px;
-            height: 22px;
-            background: radial-gradient(circle at 35% 35%, #d1d5db, #4b5563);
+        .btn-spinner {
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
-            position: absolute;
-            bottom: -11px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 11;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-            border: 2px solid var(--panel-inner);
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            display: none;
+            animation: spin 0.7s linear infinite;
         }
 
-        .display-box {
-            margin-top: 16px;
-            padding: 14px 12px;
-            border-radius: 16px;
-            background: var(--panel-inner);
-            border: 1px solid var(--border-color);
-            min-height: 58px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .action-btn.loading .btn-spinner {
+            display: block;
         }
 
-        #result-text {
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            color: var(--text-color);
-            line-height: 1.25;
-            transition: color 0.25s, transform 0.2s;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .controls {
-            margin-top: 16px;
-            display: flex;
-        }
-
-        #scanBtn {
-            width: 100%;
-            background-color: var(--accent);
-            border: none;
-            padding: 16px;
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #111827;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.15s, background-color 0.2s;
-            box-shadow: 0 4px 0 var(--accent-shadow);
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            text-transform: uppercase;
-        }
-
-        .ios-theme #scanBtn {
-            color: #ffffff;
-        }
-
-        #scanBtn:active:not(:disabled) {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 var(--accent-shadow);
-        }
-
-        #scanBtn:disabled {
-            background-color: #6b7280;
-            color: #d1d5db;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: translateY(4px);
-        }
-
+        /* =========================================================
+           НИЖНЯЯ ССЫЛКА TELEGRAM
+           ========================================================= */
         .footer {
-            padding-bottom: 4px;
+            position: relative;
+            z-index: 2;
         }
 
-        .tg-link {
+        .tg-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background-color: var(--panel-color);
-            color: var(--text-color);
-            text-decoration: none;
+            gap: 8px;
+            height: 38px;
+            padding: 0 16px;
             border-radius: 999px;
-            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 13px;
             font-weight: 600;
-            transition: transform 0.15s, opacity 0.2s;
-            -webkit-tap-highlight-color: transparent;
+            transition: color 0.2s ease, transform 0.18s cubic-bezier(0.22, 1.4, 0.36, 1);
         }
 
-        .tg-link:active {
-            transform: scale(0.96);
-            opacity: 0.85;
+        .tg-pill:hover {
+            color: var(--text-primary);
+        }
+
+        .tg-pill:active {
+            transform: scale(0.95);
+        }
+
+        .tg-pill svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        @media (max-height: 670px) {
+            body { gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+            .instrument { padding: 16px 16px 16px; gap: 12px; border-radius: 30px; }
+            .action-btn { height: 50px; }
+            .verdict-title { font-size: 19px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="theme-switcher">
-            <button class="theme-btn active" id="darkBtn" onclick="setTheme('dark-theme')" title="Тёмная тема">🌙</button>
-            <button class="theme-btn" id="lightBtn" onclick="setTheme('light-theme')" title="Светлая тема">☀️</button>
-            <button class="theme-btn" id="iosBtn" onclick="setTheme('ios-theme')" title="iOS стиль">🍎</button>
+    <!-- SVG-ФИЛЬТР ОПТИЧЕСКОГО ПРЕЛОМЛЕНИЯ ЖИДКОГО СТЕКЛА -->
+    <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
+        <defs>
+            <filter id="liquid-refract" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.007 0.010" numOctaves="2" seed="11" result="noise"/>
+                <feGaussianBlur in="noise" stdDeviation="5" result="softMap"/>
+                <feDisplacementMap in="SourceGraphic" in2="softMap" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- АТМОСФЕРНЫЙ СВЕТОВОЙ ФОН ДЛЯ РЕАЛЬНОЙ РЕФРАКЦИИ -->
+    <div class="ambient-scene" aria-hidden="true">
+        <div class="ambient-grid"></div>
+        <div class="ambient-ribbon"></div>
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <header class="topbar">
+        <div class="seg-control liquid-glass glass-subtle" id="themeSeg" role="group" aria-label="Световой режим стекла">
+            <div class="glass-backdrop"></div>
+            <div class="glass-specular"></div>
+            <div class="seg-thumb" id="segThumb"></div>
+
+            <button class="seg-btn" data-theme="dark" data-idx="0" aria-label="Ночное стекло" aria-pressed="true" title="Ночное стекло">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646Z"/>
+                </svg>
+            </button>
+
+            <button class="seg-btn" data-theme="light" data-idx="1" aria-label="Хрустальное светлое стекло" aria-pressed="false" title="Хрусталь">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4.2"/>
+                    <path d="M12 2.5v2.2M12 19.3v2.2M4.93 4.93l1.55 1.55M17.52 17.52l1.55 1.55M2.5 12h2.2M19.3 12h2.2M4.93 19.07l1.55-1.55M17.52 6.48l1.55-1.55"/>
+                </svg>
+            </button>
+
+            <button class="seg-btn" data-theme="prism" data-idx="2" aria-label="Призматическое стекло" aria-pressed="false" title="Призма">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3 3.5 18.5h17L12 3Z"/>
+                    <path d="M12 3v15.5"/>
+                </svg>
+            </button>
         </div>
 
-        <button class="sound-pill" id="soundBtn" aria-label="Звук" onclick="toggleSound()">
-            <span id="soundIcon">🔇</span>
-            <span id="soundLabel">Звук выкл</span>
+        <button class="sound-btn liquid-glass glass-subtle active" id="soundBtn" aria-label="Переключить звук" aria-pressed="true">
+            <div class="glass-backdrop"></div>
+            <div class="glass-specular"></div>
+            <svg class="sound-icon" id="soundIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+                <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+                <path d="M18.6 5.9a9 9 0 0 1 0 12.2"/>
+            </svg>
+            <svg class="sound-icon" id="soundIconOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+                <path d="m21 9-6 6M15 9l6 6"/>
+            </svg>
+            <span id="soundLabel">Звук</span>
+            <span class="sound-dot"></span>
         </button>
-    </div>
+    </header>
 
-    <div class="main-container">
-        <div class="device-container" id="device">
-            <span class="screw tl"></span>
-            <span class="screw tr"></span>
-            <span class="screw bl"></span>
-            <span class="screw br"></span>
+    <!-- ОСНОВНОЙ ПРИБОР -->
+    <main class="main-stage">
+        <section class="instrument liquid-glass" id="instrument">
+            <div class="glass-backdrop"></div>
+            <div class="glass-specular"></div>
 
-            <div class="device-top">
-                <div class="status-light ready" id="led"></div>
-                <h1>ZРАДА PRIBOR</h1>
-            </div>
-            <div class="subtitle">Индикатор текущей обстановки</div>
-
-            <div class="gauge-bezel">
-                <div class="gauge-wrapper">
-                    <div class="gauge">
-                        <span class="label label-peremoga"><span class="emoji">😎</span>ПЕРЕМОГА</span>
-                        <span class="label label-zrada"><span class="emoji">😱</span>ЗРАДА</span>
-                        <span class="label label-zadnitsa"><span class="emoji">🍑</span>ЗАДНИЦА</span>
-
-                        <div class="needle" id="needle"></div>
+            <div class="inst-header">
+                <div class="brand-wrap">
+                    <div class="status-led" id="led"></div>
+                    <div class="brand-titles">
+                        <h1 class="brand-name">ЗРАДА ПРИБОР</h1>
+                        <div class="brand-sub">Анализатор обстановки</div>
                     </div>
-                    <div class="needle-center"></div>
                 </div>
+                <div class="history-track" id="historyTrack" aria-label="Последние результаты"></div>
             </div>
 
-            <div class="display-box">
-                <div id="result-text">Готов к замеру</div>
+            <!-- ОПТИЧЕСКИЙ ЦИФЕРБЛАТ -->
+            <div class="dial-chamber">
+                <svg class="dial-svg" viewBox="0 0 360 202" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="needleGrad" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="var(--needle-shaft-dark)"/>
+                            <stop offset="50%" stop-color="var(--needle-shaft)"/>
+                            <stop offset="100%" stop-color="var(--needle-shaft-dark)"/>
+                        </linearGradient>
+                        <radialGradient id="hubGrad" cx="35%" cy="32%" r="65%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="55%" stop-color="#94a3b8"/>
+                            <stop offset="100%" stop-color="#334155"/>
+                        </radialGradient>
+                        <filter id="needleShadow" x="-30%" y="-20%" width="160%" height="150%">
+                            <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.45"/>
+                        </filter>
+
+                        <!-- Кривые траектории для точной радиальной типографики -->
+                        <path id="tp-peremoga" fill="none"/>
+                        <path id="tp-zrada" fill="none"/>
+                        <path id="tp-zadnitsa" fill="none"/>
+                    </defs>
+
+                    <!-- Внешний тонкий контур шкалы -->
+                    <path id="outerArc" fill="none" stroke="var(--dial-ring)" stroke-width="1.2"/>
+                    <path id="innerArc" fill="none" stroke="var(--dial-ring)" stroke-width="1"/>
+
+                    <!-- Сектора -->
+                    <path id="sector-peremoga" class="dial-sector" style="color: var(--zone-peremoga)" fill="var(--zone-peremoga)"/>
+                    <path id="sector-zrada" class="dial-sector" style="color: var(--zone-zrada)" fill="var(--zone-zrada)"/>
+                    <path id="sector-zadnitsa" class="dial-sector" style="color: var(--zone-zadnitsa)" fill="var(--zone-zadnitsa)"/>
+
+                    <!-- Разделительные линии секторов -->
+                    <g id="sectorDividers" stroke="var(--dial-ring)" stroke-width="1.2"></g>
+
+                    <!-- Деления шкалы -->
+                    <g id="dialTicks"></g>
+
+                    <!-- Подписи зон по дуге -->
+                    <text class="dial-sector-label" id="lbl-peremoga">
+                        <textPath href="#tp-peremoga" startOffset="50%" text-anchor="middle" dominant-baseline="central">ПЕРЕМОГА</textPath>
+                    </text>
+                    <text class="dial-sector-label" id="lbl-zrada">
+                        <textPath href="#tp-zrada" startOffset="50%" text-anchor="middle" dominant-baseline="central">ЗРАДА</textPath>
+                    </text>
+                    <text class="dial-sector-label" id="lbl-zadnitsa">
+                        <textPath href="#tp-zadnitsa" startOffset="50%" text-anchor="middle" dominant-baseline="central">ЗАДНИЦА</textPath>
+                    </text>
+
+                    <!-- Стрелка с противовесом и осью -->
+                    <g id="needleGroup" filter="url(#needleShadow)">
+                        <polygon points="177.8,195 182.2,195 180.7,34 179.3,34" fill="url(#needleGrad)"/>
+                        <polygon points="179.7,58 180.3,58 180.7,34 179.3,34" fill="var(--needle-tip)"/>
+                    </g>
+
+                    <!-- Центральный подшипник стрелки -->
+                    <circle cx="180" cy="178" r="13.5" fill="rgba(0,0,0,0.28)"/>
+                    <circle cx="180" cy="178" r="11.5" fill="url(#hubGrad)"/>
+                    <circle cx="180" cy="178" r="4.5" fill="#1e293b"/>
+                    <circle cx="178.8" cy="176.8" r="1.4" fill="rgba(255,255,255,0.75)"/>
+                </svg>
+                <div class="dial-lens"></div>
             </div>
 
-            <div class="controls">
-                <button id="scanBtn" onclick="startAnalysis()">ЗАМЕРИТЬ</button>
+            <!-- ИНФОРМАЦИОННАЯ КАПСУЛА -->
+            <div class="readout-capsule">
+                <div class="readout-meta">
+                    <span id="statusTag">Калибровка</span>
+                    <span class="telemetry-pill" id="telemetryPill">0°</span>
+                </div>
+                <div class="verdict-title" id="verdictTitle">Готов к замеру</div>
+                <div class="verdict-sub" id="verdictSub">Нажмите кнопку для анализа текущей обстановки</div>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <a href="https://t.me/littleguyNEW" target="_blank" rel="noopener noreferrer" class="tg-link">
-            <span>✈️</span>
+            <!-- КНОПКА ЗАПУСКА -->
+            <button class="action-btn" id="scanBtn">
+                <span class="btn-spinner" aria-hidden="true"></span>
+                <span id="scanBtnLabel">Замерить</span>
+            </button>
+        </section>
+    </main>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer">
+        <a href="https://t.me/littleguyNEW" target="_blank" rel="noopener noreferrer" class="tg-pill liquid-glass glass-subtle">
+            <div class="glass-backdrop"></div>
+            <div class="glass-specular"></div>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21.93 4.19a1.25 1.25 0 0 0-1.35-.2L2.64 11.17a1.15 1.15 0 0 0 .06 2.15l4.48 1.56 1.72 5.38a1.05 1.05 0 0 0 1.78.4l2.54-2.66 4.44 3.31a1.25 1.25 0 0 0 1.97-.74l2.76-15.13a1.25 1.25 0 0 0-.46-1.25ZM8.9 14.37l9.28-6.17c.17-.11.34.12.2.26l-7.59 7.21-.3 3.24-1.59-4.54Z"/>
+            </svg>
             <span>Telegram</span>
         </a>
-    </div>
+    </footer>
 
     <script>
-        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        (function () {
+            "use strict";
 
-        const needle = document.getElementById('needle');
-        const resultText = document.getElementById('result-text');
-        const scanBtn = document.getElementById('scanBtn');
-        const device = document.getElementById('device');
-        const led = document.getElementById('led');
-        const soundBtn = document.getElementById('soundBtn');
-        const soundIcon = document.getElementById('soundIcon');
-        const soundLabel = document.getElementById('soundLabel');
-        const darkBtn = document.getElementById('darkBtn');
-        const lightBtn = document.getElementById('lightBtn');
-        const iosBtn = document.getElementById('iosBtn');
+            /* =========================================================
+               0. ДЕТЕКЦИЯ ОПТИЧЕСКОГО SVG-ПРЕЛОМЛЕНИЯ В CHROMIUM
+               ========================================================= */
+            try {
+                const isChromium = /Chrome|Chromium|Edg/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent)
+                    || (/Chrome/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent) && !!window.chrome);
+                if (isChromium && CSS.supports("backdrop-filter", "url(#liquid-refract) blur(10px)")) {
+                    document.documentElement.classList.add("has-svg-refract");
+                }
+            } catch (_) {}
 
-        let isSoundOn = false;
-        let audioCtx = null;
+            /* =========================================================
+               1. ЭЛЕМЕНТЫ И СОСТОЯНИЕ
+               ========================================================= */
+            const root = document.documentElement;
+            const body = document.body;
+            const themeMeta = document.getElementById("theme-color-meta");
+            const themeSeg = document.getElementById("themeSeg");
+            const segBtns = Array.from(themeSeg.querySelectorAll(".seg-btn"));
+            const soundBtn = document.getElementById("soundBtn");
+            const soundIconOn = document.getElementById("soundIconOn");
+            const soundIconOff = document.getElementById("soundIconOff");
 
-        function setTheme(theme) {
-            document.documentElement.className = theme;
-            darkBtn.classList.toggle('active', theme === 'dark-theme');
-            lightBtn.classList.toggle('active', theme === 'light-theme');
-            iosBtn.classList.toggle('active', theme === 'ios-theme');
-            localStorage.setItem('zrada-theme', theme);
-        }
+            const instrument = document.getElementById("instrument");
+            const led = document.getElementById("led");
+            const historyTrack = document.getElementById("historyTrack");
+            const needleGroup = document.getElementById("needleGroup");
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('zrada-theme') || 'dark-theme';
-            setTheme(savedTheme);
-        });
+            const statusTag = document.getElementById("statusTag");
+            const telemetryPill = document.getElementById("telemetryPill");
+            const verdictTitle = document.getElementById("verdictTitle");
+            const verdictSub = document.getElementById("verdictSub");
+            const scanBtn = document.getElementById("scanBtn");
+            const scanBtnLabel = document.getElementById("scanBtnLabel");
 
-        function initAudio() {
-            if (!audioCtx) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
+            const sectorEls = {
+                peremoga: document.getElementById("sector-peremoga"),
+                zrada: document.getElementById("sector-zrada"),
+                zadnitsa: document.getElementById("sector-zadnitsa")
+            };
+            const labelEls = {
+                peremoga: document.getElementById("lbl-peremoga"),
+                zrada: document.getElementById("lbl-zrada"),
+                zadnitsa: document.getElementById("lbl-zadnitsa")
+            };
+
+            const THEME_META_COLORS = {
+                dark: "#06080f",
+                light: "#dde7f3",
+                prism: "#070510"
+            };
+
+            const SUB_LINES = {
+                peremoga: [
+                    "Показатели уверенно в зелёном секторе",
+                    "Уровень оптимизма превышает расчётный",
+                    "Аномалий не выявлено, курс верный",
+                    "Стабильный подъём, тревожных сигналов нет"
+                ],
+                zrada: [
+                    "Фиксируется тревожное отклонение стрелки",
+                    "Требуется срочная проверка обстоятельств",
+                    "Повышенный фон, ситуация напряжённая",
+                    "Датчики уловили критический скепсис"
+                ],
+                zadnitsa: [
+                    "Стрелка ушла в предельный сектор",
+                    "Рекомендуется не делать резких движений",
+                    "Превышен допустимый порог нелепости",
+                    "Прибор просит перерыв и горячий чай"
+                ]
+            };
+
+            let isSoundOn = true;
+            let currentAngle = 0;
+            let isScanning = false;
+            const historyList = [];
+
+            function safeGetStorage(key, fallback) {
+                try {
+                    const val = localStorage.getItem(key);
+                    return val === null ? fallback : val;
+                } catch (_) {
+                    return fallback;
+                }
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+
+            function safeSetStorage(key, val) {
+                try { localStorage.setItem(key, val); } catch (_) {}
             }
-        }
 
-        function toggleSound() {
-            initAudio();
-            isSoundOn = !isSoundOn;
-            soundIcon.innerText = isSoundOn ? "🔊" : "🔇";
-            soundLabel.innerText = isSoundOn ? "Звук вкл" : "Звук выкл";
-            soundBtn.classList.toggle('active', isSoundOn);
-            if (isSoundOn) playTone('click');
-        }
+            /* =========================================================
+               2. ПОСТРОЕНИЕ ТОЧНОЙ ГЕОМЕТРИИ SVG-ЦИФЕРБЛАТА
+               ========================================================= */
+            const CX = 180;
+            const CY = 178;
 
-        function playTone(type) {
-            if (!isSoundOn || !audioCtx) return;
-            const now = audioCtx.currentTime;
+            function polar(deg, r) {
+                const rad = (deg * Math.PI) / 180;
+                return [CX + r * Math.sin(rad), CY - r * Math.cos(rad)];
+            }
 
-            if (type === 'click') {
-                // Механический щелчок тумблера
+            function makeArc(startDeg, endDeg, r) {
+                const [x1, y1] = polar(startDeg, r);
+                const [x2, y2] = polar(endDeg, r);
+                const large = (endDeg - startDeg) > 180 ? 1 : 0;
+                return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+            }
+
+            function makeSector(startDeg, endDeg, rIn, rOut) {
+                const [x1, y1] = polar(startDeg, rOut);
+                const [x2, y2] = polar(endDeg, rOut);
+                const [x3, y3] = polar(endDeg, rIn);
+                const [x4, y4] = polar(startDeg, rIn);
+                const large = (endDeg - startDeg) > 180 ? 1 : 0;
+                return (
+                    `M ${x1.toFixed(2)} ${y1.toFixed(2)} ` +
+                    `A ${rOut} ${rOut} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} ` +
+                    `L ${x3.toFixed(2)} ${y3.toFixed(2)} ` +
+                    `A ${rIn} ${rIn} 0 ${large} 0 ${x4.toFixed(2)} ${y4.toFixed(2)} Z`
+                );
+            }
+
+            (function buildDial() {
+                document.getElementById("outerArc").setAttribute("d", makeArc(-90, 90, 148));
+                document.getElementById("innerArc").setAttribute("d", makeArc(-90, 90, 82));
+
+                sectorEls.peremoga.setAttribute("d", makeSector(-90, -30.5, 84, 134));
+                sectorEls.zrada.setAttribute("d", makeSector(-29.5, 29.5, 84, 134));
+                sectorEls.zadnitsa.setAttribute("d", makeSector(30.5, 90, 84, 134));
+
+                document.getElementById("tp-peremoga").setAttribute("d", makeArc(-87, -33, 109));
+                document.getElementById("tp-zrada").setAttribute("d", makeArc(-27, 27, 109));
+                document.getElementById("tp-zadnitsa").setAttribute("d", makeArc(33, 87, 109));
+
+                const dividers = document.getElementById("sectorDividers");
+                [-30, 30].forEach((deg) => {
+                    const [x1, y1] = polar(deg, 82);
+                    const [x2, y2] = polar(deg, 148);
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", x1.toFixed(2));
+                    line.setAttribute("y1", y1.toFixed(2));
+                    line.setAttribute("x2", x2.toFixed(2));
+                    line.setAttribute("y2", y2.toFixed(2));
+                    dividers.appendChild(line);
+                });
+
+                const ticksGroup = document.getElementById("dialTicks");
+                for (let step = 0; step <= 72; step++) {
+                    const deg = -90 + step * 2.5;
+                    const isMajor = step % 6 === 0;   // каждые 15°
+                    const isMed = !isMajor && step % 2 === 0; // каждые 5°
+
+                    const rOut = 146;
+                    const rIn = isMajor ? 136 : (isMed ? 140 : 142.5);
+                    const [x1, y1] = polar(deg, rIn);
+                    const [x2, y2] = polar(deg, rOut);
+
+                    const tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    tick.setAttribute("x1", x1.toFixed(2));
+                    tick.setAttribute("y1", y1.toFixed(2));
+                    tick.setAttribute("x2", x2.toFixed(2));
+                    tick.setAttribute("y2", y2.toFixed(2));
+                    tick.setAttribute("stroke", isMajor ? "var(--dial-tick-major)" : "var(--dial-tick)");
+                    tick.setAttribute("stroke-width", isMajor ? "1.6" : (isMed ? "1.1" : "0.75"));
+                    tick.setAttribute("stroke-linecap", "round");
+                    ticksGroup.appendChild(tick);
+                }
+            })();
+
+            /* =========================================================
+               3. ПРОЦЕДУРНЫЙ АУДИОСИНТЕЗАТОР (WEB AUDIO API)
+               ========================================================= */
+            let audioCtx = null;
+            let masterBus = null;
+            let fxBus = null;
+            let humNodes = null;
+
+            function ensureAudio() {
+                if (!isSoundOn) return false;
+                try {
+                    if (!audioCtx) {
+                        const AC = window.AudioContext || window.webkitAudioContext;
+                        if (!AC) return false;
+                        audioCtx = new AC();
+
+                        const compressor = audioCtx.createDynamicsCompressor();
+                        compressor.threshold.value = -14;
+                        compressor.knee.value = 18;
+                        compressor.ratio.value = 4;
+                        compressor.attack.value = 0.003;
+                        compressor.release.value = 0.16;
+
+                        masterBus = audioCtx.createGain();
+                        masterBus.gain.value = 0.85;
+                        masterBus.connect(compressor);
+                        compressor.connect(audioCtx.destination);
+
+                        // Лёгкая пространственная задержка для глубины звучания
+                        const delay = audioCtx.createDelay(0.5);
+                        delay.delayTime.value = 0.085;
+                        const fb = audioCtx.createGain();
+                        fb.gain.value = 0.22;
+                        const lp = audioCtx.createBiquadFilter();
+                        lp.type = "lowpass";
+                        lp.frequency.value = 1900;
+                        const wet = audioCtx.createGain();
+                        wet.gain.value = 0.18;
+
+                        fxBus = audioCtx.createGain();
+                        fxBus.connect(delay);
+                        delay.connect(lp);
+                        lp.connect(fb);
+                        fb.connect(delay);
+                        lp.connect(wet);
+                        wet.connect(masterBus);
+                    }
+                    if (audioCtx.state === "suspended") {
+                        audioCtx.resume();
+                    }
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // Мягкий стеклянный отклик для переключателей
+            function playGlassTap() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(950, now);
-                osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
-                gain.gain.setValueAtTime(0.14, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(1420, now);
+                osc.frequency.exponentialRampToValueAtTime(1920, now + 0.018);
+
+                gain.gain.setValueAtTime(0.055, now);
+                gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.032);
+
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(masterBus);
+                gain.connect(fxBus);
                 osc.start(now);
                 osc.stop(now + 0.035);
             }
-            else if (type === 'tick') {
-                // Короткий треск счётчика Гейгера (фильтр + шум)
-                const bufferSize = Math.floor(audioCtx.sampleRate * 0.018);
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+
+            // Тактильный механический тумблер при нажатии «Замерить»
+            function playSwitchClick() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+
+                // Низкочастотный импульс корпуса
+                const thump = audioCtx.createOscillator();
+                const tGain = audioCtx.createGain();
+                thump.type = "sine";
+                thump.frequency.setValueAtTime(210, now);
+                thump.frequency.exponentialRampToValueAtTime(58, now + 0.042);
+                tGain.gain.setValueAtTime(0.22, now);
+                tGain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+                thump.connect(tGain);
+                tGain.connect(masterBus);
+                thump.start(now);
+                thump.stop(now + 0.048);
+
+                // Короткий щелчок реле
+                const len = Math.floor(audioCtx.sampleRate * 0.014);
+                const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+                const ch = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) {
+                    ch[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.22));
+                }
+                const src = audioCtx.createBufferSource();
+                src.buffer = buf;
+
+                const bp = audioCtx.createBiquadFilter();
+                bp.type = "bandpass";
+                bp.frequency.value = 1650;
+                bp.Q.value = 2.2;
+
+                const nGain = audioCtx.createGain();
+                nGain.gain.setValueAtTime(0.16, now);
+                nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.014);
+
+                src.connect(bp);
+                bp.connect(nGain);
+                nGain.connect(masterBus);
+                src.start(now);
+            }
+
+            // Фоновый трансформаторный гул катушки на время сканирования
+            function startScanHum() {
+                if (!ensureAudio() || humNodes) return;
+                const now = audioCtx.currentTime;
+
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const lp = audioCtx.createBiquadFilter();
+                const gain = audioCtx.createGain();
+
+                osc1.type = "triangle";
+                osc1.frequency.value = 58;
+                osc2.type = "sine";
+                osc2.frequency.value = 116;
+
+                lp.type = "lowpass";
+                lp.frequency.value = 230;
+
+                gain.gain.setValueAtTime(0.0005, now);
+                gain.gain.linearRampToValueAtTime(0.055, now + 0.14);
+
+                osc1.connect(lp);
+                osc2.connect(lp);
+                lp.connect(gain);
+                gain.connect(masterBus);
+
+                osc1.start(now);
+                osc2.start(now);
+                humNodes = { osc1, osc2, gain };
+            }
+
+            function stopScanHum() {
+                if (!humNodes || !audioCtx) return;
+                const now = audioCtx.currentTime;
+                const { osc1, osc2, gain } = humNodes;
+                humNodes = null;
+                try {
+                    gain.gain.cancelScheduledValues(now);
+                    gain.gain.setValueAtTime(Math.max(gain.gain.value, 0.001), now);
+                    gain.gain.exponentialRampToValueAtTime(0.0005, now + 0.12);
+                    osc1.stop(now + 0.14);
+                    osc2.stop(now + 0.14);
+                } catch (_) {}
+            }
+
+            // Реалистичный импульс счётчика Гейгера при движении стрелки
+            function playGeigerTick(velocityNorm) {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+
+                const len = Math.floor(audioCtx.sampleRate * 0.012);
+                const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+                const ch = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) {
+                    ch[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.18));
                 }
                 const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
+                noise.buffer = buf;
 
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1800 + Math.random() * 900;
-                filter.Q.value = 3;
+                const bp = audioCtx.createBiquadFilter();
+                bp.type = "bandpass";
+                bp.frequency.value = 1950 + velocityNorm * 1100 + Math.random() * 500;
+                bp.Q.value = 3.8;
 
                 const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.22, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+                const amp = 0.12 + Math.min(velocityNorm, 1) * 0.10;
+                gain.gain.setValueAtTime(amp, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.012);
 
-                noise.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
+                noise.connect(bp);
+                bp.connect(gain);
+                gain.connect(masterBus);
                 noise.start(now);
             }
-            else if (type === 'peremoga') {
-                // Мягкий мажорный аккорд-фанфара
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((freq, idx) => {
-                    const start = now + idx * 0.09;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, start);
-                    gain.gain.setValueAtTime(0.001, start);
-                    gain.gain.linearRampToValueAtTime(0.13, start + 0.02);
-                    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(start);
-                    osc.stop(start + 0.45);
+
+            // Мягкая фиксация магнитного стопора стрелки
+            function playNeedleLatch() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(125, now);
+                osc.frequency.exponentialRampToValueAtTime(52, now + 0.04);
+                gain.gain.setValueAtTime(0.09, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+                osc.connect(gain);
+                gain.connect(masterBus);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+
+            // Итог: ПЕРЕМОГА — хрустальный мажорный каскад
+            function playPeremoga() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+                const chord = [523.25, 659.25, 783.99, 987.77, 1174.66]; // Cmaj9
+
+                chord.forEach((freq, i) => {
+                    const t = now + i * 0.068;
+                    [-3, 3].forEach((cents) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = i === 0 ? "triangle" : "sine";
+                        osc.frequency.setValueAtTime(freq, t);
+                        osc.detune.value = cents;
+
+                        gain.gain.setValueAtTime(0.0008, t);
+                        gain.gain.linearRampToValueAtTime(0.085, t + 0.018);
+                        gain.gain.exponentialRampToValueAtTime(0.0008, t + 0.72);
+
+                        osc.connect(gain);
+                        gain.connect(masterBus);
+                        gain.connect(fxBus);
+                        osc.start(t);
+                        osc.stop(t + 0.75);
+                    });
                 });
             }
-            else if (type === 'zrada') {
-                // Двойной тревожный зуммер
-                [0, 0.16].forEach((offset) => {
-                    const start = now + offset;
-                    const osc = audioCtx.createOscillator();
+
+            // Итог: ЗРАДА — чёткий тревожный двухтональный сигнал прибора
+            function playZrada() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+
+                [0, 0.21].forEach((offset) => {
+                    const t = now + offset;
+                    const osc1 = audioCtx.createOscillator();
+                    const osc2 = audioCtx.createOscillator();
                     const filter = audioCtx.createBiquadFilter();
                     const gain = audioCtx.createGain();
 
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(520, start);
-                    osc.frequency.linearRampToValueAtTime(410, start + 0.12);
+                    osc1.type = "triangle";
+                    osc2.type = "sawtooth";
 
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 1400;
+                    osc1.frequency.setValueAtTime(640, t);
+                    osc1.frequency.exponentialRampToValueAtTime(450, t + 0.14);
+                    osc2.frequency.setValueAtTime(905, t); // тритон + октавный обертон
+                    osc2.frequency.exponentialRampToValueAtTime(636, t + 0.14);
 
-                    gain.gain.setValueAtTime(0.12, start);
-                    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.13);
+                    filter.type = "lowpass";
+                    filter.frequency.setValueAtTime(2200, t);
+                    filter.frequency.exponentialRampToValueAtTime(900, t + 0.15);
+                    filter.Q.value = 3.2;
 
-                    osc.connect(filter);
+                    gain.gain.setValueAtTime(0.001, t);
+                    gain.gain.linearRampToValueAtTime(0.12, t + 0.015);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.165);
+
+                    osc1.connect(filter);
+                    osc2.connect(filter);
                     filter.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(start);
-                    osc.stop(start + 0.13);
+                    gain.connect(masterBus);
+                    gain.connect(fxBus);
+
+                    osc1.start(t);
+                    osc2.start(t);
+                    osc1.stop(t + 0.175);
+                    osc2.stop(t + 0.175);
                 });
             }
-            else if (type === 'zadnitsa') {
-                // Грустный нисходящий тромбон
-                const steps = [196.00, 185.00, 174.61, 164.81];
-                steps.forEach((freq, idx) => {
-                    const start = now + idx * 0.18;
-                    const dur = idx === 3 ? 0.55 : 0.17;
-                    const osc = audioCtx.createOscillator();
-                    const filter = audioCtx.createBiquadFilter();
+
+            // Итог: ПОЛНАЯ ЗАДНИЦА — выразительный сурдинный тромбон («ва-ва-ва-вааа»)
+            function playZadnitsa() {
+                if (!ensureAudio()) return;
+                const now = audioCtx.currentTime;
+                const steps = [
+                    { freq: 146.83, dur: 0.20, gap: 0.00 }, // D3
+                    { freq: 138.59, dur: 0.20, gap: 0.22 }, // C#3
+                    { freq: 130.81, dur: 0.20, gap: 0.44 }, // C3
+                    { freq: 123.47, dur: 0.72, gap: 0.66, slideTo: 103.83 } // B2 -> G#2
+                ];
+
+                steps.forEach((step) => {
+                    const t = now + step.gap;
+                    const oscSaw = audioCtx.createOscillator();
+                    const oscSub = audioCtx.createOscillator();
+                    const formant = audioCtx.createBiquadFilter();
                     const gain = audioCtx.createGain();
 
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(freq, start);
-                    if (idx === 3) {
-                        osc.frequency.linearRampToValueAtTime(138.59, start + dur);
+                    oscSaw.type = "sawtooth";
+                    oscSub.type = "triangle";
+
+                    oscSaw.frequency.setValueAtTime(step.freq, t);
+                    oscSub.frequency.setValueAtTime(step.freq * 0.5, t);
+
+                    if (step.slideTo) {
+                        oscSaw.frequency.linearRampToValueAtTime(step.slideTo, t + step.dur);
+                        oscSub.frequency.linearRampToValueAtTime(step.slideTo * 0.5, t + step.dur);
+
+                        // Лёгкое комедийное вибрато на протяжной последней ноте
+                        const lfo = audioCtx.createOscillator();
+                        const lfoGain = audioCtx.createGain();
+                        lfo.frequency.value = 5.6;
+                        lfoGain.gain.value = 3.2;
+                        lfo.connect(lfoGain);
+                        lfoGain.connect(oscSaw.frequency);
+                        lfo.start(t + 0.14);
+                        lfo.stop(t + step.dur);
                     }
 
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 750;
+                    // Формантная имитация сурдины тромбона
+                    formant.type = "lowpass";
+                    formant.Q.value = 2.9;
+                    formant.frequency.setValueAtTime(280, t);
+                    formant.frequency.exponentialRampToValueAtTime(920, t + 0.07);
+                    formant.frequency.exponentialRampToValueAtTime(300, t + step.dur);
 
-                    gain.gain.setValueAtTime(0.14, start);
-                    gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+                    gain.gain.setValueAtTime(0.001, t);
+                    gain.gain.linearRampToValueAtTime(0.15, t + 0.03);
+                    gain.gain.setValueAtTime(0.14, t + step.dur * 0.72);
+                    gain.gain.exponentialRampToValueAtTime(0.0008, t + step.dur);
 
-                    osc.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(start);
-                    osc.stop(start + dur);
+                    oscSaw.connect(formant);
+                    oscSub.connect(formant);
+                    formant.connect(gain);
+                    gain.connect(masterBus);
+                    gain.connect(fxBus);
+
+                    oscSaw.start(t);
+                    oscSub.start(t);
+                    oscSaw.stop(t + step.dur + 0.02);
+                    oscSub.stop(t + step.dur + 0.02);
                 });
             }
-        }
 
-        function startAnalysis() {
-            initAudio();
-            playTone('click');
+            /* =========================================================
+               4. УПРАВЛЕНИЕ ТЕМАМИ И ЗВУКОМ
+               ========================================================= */
+            function applyTheme(theme, playFeedback = false) {
+                if (!THEME_META_COLORS[theme]) theme = "dark";
+                root.setAttribute("data-theme", theme);
+                if (themeMeta) themeMeta.setAttribute("content", THEME_META_COLORS[theme]);
 
-            scanBtn.disabled = true;
-            scanBtn.innerText = "СКАНИРУЮ...";
-            resultText.innerText = "ИДЁТ ЗАМЕР...";
-            resultText.style.color = "var(--text-color)";
+                segBtns.forEach((btn) => {
+                    const active = btn.dataset.theme === theme;
+                    btn.setAttribute("aria-pressed", active ? "true" : "false");
+                    if (active) {
+                        themeSeg.style.setProperty("--seg-idx", btn.dataset.idx);
+                    }
+                });
 
-            device.classList.add('shaking');
-            led.classList.remove('ready');
-            led.classList.add('scanning');
+                safeSetStorage("zrada-glass-theme", theme);
+                if (playFeedback) playGlassTap();
+            }
 
-            needle.style.transition = "none";
+            function applySoundState(enabled, playFeedback = false) {
+                isSoundOn = enabled;
+                soundBtn.classList.toggle("active", isSoundOn);
+                soundBtn.setAttribute("aria-pressed", isSoundOn ? "true" : "false");
+                soundIconOn.style.display = isSoundOn ? "block" : "none";
+                soundIconOff.style.display = isSoundOn ? "none" : "block";
+                safeSetStorage("zrada-sound", isSoundOn ? "1" : "0");
+                if (isSoundOn && playFeedback) playGlassTap();
+            }
 
-            let scanSteps = 0;
-            const maxSteps = 32;
+            segBtns.forEach((btn) => {
+                btn.addEventListener("click", () => applyTheme(btn.dataset.theme, true));
+            });
 
-            const interval = setInterval(() => {
-                const randomAngle = Math.floor(Math.random() * 176) - 88;
-                needle.style.transform = `rotate(${randomAngle}deg)`;
+            soundBtn.addEventListener("click", () => {
+                applySoundState(!isSoundOn, true);
+            });
 
-                if (scanSteps % 2 === 0) playTone('tick');
-                if (navigator.vibrate) navigator.vibrate(6);
+            // Инициализация сохранённых настроек
+            applyTheme(safeGetStorage("zrada-glass-theme", "dark"), false);
+            applySoundState(safeGetStorage("zrada-sound", "1") !== "0", false);
 
-                scanSteps++;
-                if (scanSteps >= maxSteps) finishAnalysis(interval);
-            }, 55);
-        }
+            /* =========================================================
+               5. ЖИВОЙ ОПТИЧЕСКИЙ БЛИК НА ГРАНЯХ ЖИДКОГО СТЕКЛА
+               ========================================================= */
+            let pointerRaf = null;
+            let lastPx = 0.3;
+            let lastPy = 0.2;
 
-        function finishAnalysis(interval) {
-            clearInterval(interval);
-            device.classList.remove('shaking');
-            led.classList.remove('scanning');
-            led.classList.add('ready');
+            function updateGlassSpecular() {
+                pointerRaf = null;
+                const gx = `${(lastPx * 100).toFixed(1)}%`;
+                const gy = `${(lastPy * 100).toFixed(1)}%`;
+                const rimAngle = `${Math.round(115 + (lastPx - 0.5) * 70)}deg`;
 
-            const finalAngle = Math.floor(Math.random() * 176) - 88;
-            needle.style.transition = "transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                instrument.style.setProperty("--gx", gx);
+                instrument.style.setProperty("--gy", gy);
+                instrument.style.setProperty("--rim-angle", rimAngle);
+            }
 
-            setTimeout(() => {
-                needle.style.transform = `rotate(${finalAngle}deg)`;
-                showResult(finalAngle);
-            }, 40);
-        }
+            window.addEventListener("pointermove", (e) => {
+                const rect = instrument.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+                lastPx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                lastPy = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+                if (!pointerRaf) pointerRaf = requestAnimationFrame(updateGlassSpecular);
+            }, { passive: true });
 
-        function showResult(angle) {
-            setTimeout(() => {
-                let text = "";
-                let color = "";
-                let soundType = "";
+            /* =========================================================
+               6. ПРУЖИННАЯ ФИЗИКА СТРЕЛКИ (60–120 FPS)
+               ========================================================= */
+            const physics = {
+                angle: 0,
+                velocity: 0,
+                target: 0,
+                mode: "idle", // 'idle' | 'scanning' | 'settling'
+                lastTs: 0,
+                lastTickBucket: 0,
+                lastTickAudioTs: 0,
+                rafId: null,
+                onSettled: null
+            };
 
-                if (angle <= -30) {
-                    text = "ЕСТЬ ПЕРЕМОГА! 😎🎉";
-                    color = "var(--peremoga)";
-                    soundType = "peremoga";
-                } else if (angle > -30 && angle < 30) {
-                    text = "ТРЕВОГА: ZРАДА! 😱🔥";
-                    color = "var(--zrada)";
-                    soundType = "zrada";
-                } else {
-                    text = "ПОЛНАЯ ЗАДНИЦА 🍑💀";
-                    color = "#e67e22";
-                    soundType = "zadnitsa";
+            function renderNeedle(deg) {
+                currentAngle = deg;
+                needleGroup.setAttribute("transform", `rotate(${deg.toFixed(2)} ${CX} ${CY})`);
+                if (isScanning) {
+                    const rounded = Math.round(deg);
+                    telemetryPill.textContent = `${rounded > 0 ? "+" : ""}${rounded}°`;
+                }
+            }
+
+            function stepPhysics(ts) {
+                if (!physics.lastTs) physics.lastTs = ts;
+                const dt = Math.min((ts - physics.lastTs) / 1000, 0.04);
+                physics.lastTs = ts;
+
+                if (physics.mode !== "idle") {
+                    const stiffness = physics.mode === "scanning" ? 225 : 138;
+                    const damping = physics.mode === "scanning" ? 11.5 : 13.8;
+
+                    const accel = (physics.target - physics.angle) * stiffness - physics.velocity * damping;
+                    physics.velocity += accel * dt;
+                    physics.angle += physics.velocity * dt;
+
+                    // Физический отскок от ограничителей шкалы (-92° / +92°)
+                    if (physics.angle < -92) {
+                        physics.angle = -92;
+                        physics.velocity = Math.abs(physics.velocity) * 0.42;
+                    } else if (physics.angle > 92) {
+                        physics.angle = 92;
+                        physics.velocity = -Math.abs(physics.velocity) * 0.42;
+                    }
+
+                    renderNeedle(physics.angle);
+
+                    // Акустический треск Гейгера при пересечении делений
+                    if (physics.mode === "scanning") {
+                        const bucket = Math.round(physics.angle / 8);
+                        if (bucket !== physics.lastTickBucket && ts - physics.lastTickAudioTs > 46) {
+                            physics.lastTickBucket = bucket;
+                            physics.lastTickAudioTs = ts;
+                            playGeigerTick(Math.abs(physics.velocity) / 420);
+                            if (navigator.vibrate) navigator.vibrate(4);
+                        }
+                    }
+
+                    // Проверка полной остановки стрелки на цели
+                    if (
+                        physics.mode === "settling" &&
+                        Math.abs(physics.angle - physics.target) < 0.28 &&
+                        Math.abs(physics.velocity) < 1.1
+                    ) {
+                        physics.angle = physics.target;
+                        physics.velocity = 0;
+                        physics.mode = "idle";
+                        renderNeedle(physics.angle);
+                        physics.rafId = null;
+                        if (typeof physics.onSettled === "function") {
+                            const cb = physics.onSettled;
+                            physics.onSettled = null;
+                            cb();
+                        }
+                        return;
+                    }
                 }
 
-                resultText.innerText = text;
-                resultText.style.color = color;
-                playTone(soundType);
+                physics.rafId = requestAnimationFrame(stepPhysics);
+            }
 
-                if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+            function ensurePhysicsLoop() {
+                if (!physics.rafId) {
+                    physics.lastTs = 0;
+                    physics.rafId = requestAnimationFrame(stepPhysics);
+                }
+            }
+
+            /* =========================================================
+               7. ЛОГИКА АНАЛИЗА И ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+               ========================================================= */
+            function clearSectorHighlight() {
+                Object.keys(sectorEls).forEach((k) => {
+                    sectorEls[k].classList.remove("active");
+                    labelEls[k].classList.remove("active");
+                });
+            }
+
+            function computeIntensity(zone, angle) {
+                if (zone === "peremoga") {
+                    return Math.min(99, Math.max(18, Math.round(((Math.abs(angle) - 30) / 58) * 81 + 18)));
+                }
+                if (zone === "zadnitsa") {
+                    return Math.min(99, Math.max(18, Math.round(((angle - 30) / 58) * 81 + 18)));
+                }
+                // Зрада: максимум интенсивности в центре (0°), меньше к границам ±30°
+                return Math.min(99, Math.max(32, Math.round((1 - Math.abs(angle) / 30) * 67 + 32)));
+            }
+
+            function pushHistory(zone) {
+                historyList.push(zone);
+                if (historyList.length > 6) historyList.shift();
+
+                historyTrack.innerHTML = "";
+                historyList.forEach((z) => {
+                    const pip = document.createElement("span");
+                    pip.className = "history-pip";
+                    pip.dataset.zone = z;
+                    historyTrack.appendChild(pip);
+                });
+                historyTrack.classList.add("visible");
+            }
+
+            function startAnalysis() {
+                if (isScanning) return;
+                isScanning = true;
+
+                ensureAudio();
+                playSwitchClick();
+                startScanHum();
+
+                clearSectorHighlight();
+                body.removeAttribute("data-verdict");
+                instrument.classList.add("scanning-shake");
+                led.classList.add("scanning");
+
+                scanBtn.disabled = true;
+                scanBtn.classList.add("loading");
+                scanBtnLabel.textContent = "Сканирование";
+
+                statusTag.textContent = "Идёт замер";
+                verdictTitle.textContent = "Анализ фона...";
+                verdictTitle.style.color = "var(--text-primary)";
+                verdictSub.textContent = "Считывание магнитных возмущений";
+
+                physics.mode = "scanning";
+                ensurePhysicsLoop();
+
+                // Энергичные колебания стрелки с перебросом через ноль
+                let swingDir = physics.angle >= 0 ? -1 : 1;
+                const swingTimer = setInterval(() => {
+                    const magnitude = 35 + Math.random() * 54;
+                    physics.target = swingDir * magnitude;
+                    swingDir = -swingDir;
+                }, 135);
+
+                // Начальный импульс сразу
+                physics.target = swingDir * (58 + Math.random() * 28);
+
+                setTimeout(() => {
+                    clearInterval(swingTimer);
+                    stopScanHum();
+
+                    instrument.classList.remove("scanning-shake");
+                    led.classList.remove("scanning");
+
+                    const finalAngle = Math.round((Math.random() * 176 - 88) * 10) / 10;
+                    let settleDone = false;
+
+                    const finalize = () => {
+                        if (settleDone) return;
+                        settleDone = true;
+                        revealVerdict(finalAngle);
+                    };
+
+                    physics.mode = "settling";
+                    physics.target = finalAngle;
+                    physics.onSettled = finalize;
+
+                    // Страховочный таймер на случай сворачивания вкладки
+                    setTimeout(() => {
+                        if (!settleDone) {
+                            physics.mode = "idle";
+                            physics.angle = finalAngle;
+                            physics.velocity = 0;
+                            renderNeedle(finalAngle);
+                            finalize();
+                        }
+                    }, 1150);
+                }, 1650);
+            }
+
+            function revealVerdict(angle) {
+                isScanning = false;
+                playNeedleLatch();
+
+                let zone = "zrada";
+                let title = "ЗРАДА";
+                let colorVar = "var(--zone-zrada)";
+
+                if (angle <= -30) {
+                    zone = "peremoga";
+                    title = "ПЕРЕМОГА";
+                    colorVar = "var(--zone-peremoga)";
+                    playPeremoga();
+                } else if (angle >= 30) {
+                    zone = "zadnitsa";
+                    title = "ПОЛНАЯ ЗАДНИЦА";
+                    colorVar = "var(--zone-zadnitsa)";
+                    playZadnitsa();
+                } else {
+                    playZrada();
+                }
+
+                const intensity = computeIntensity(zone, angle);
+                const lines = SUB_LINES[zone];
+                const subText = lines[Math.floor(Math.random() * lines.length)];
+
+                body.setAttribute("data-verdict", zone);
+                sectorEls[zone].classList.add("active");
+                labelEls[zone].classList.add("active");
+
+                statusTag.textContent = "Замер завершён";
+                const roundedDeg = Math.round(angle);
+                telemetryPill.textContent = `${intensity}% · ${roundedDeg > 0 ? "+" : ""}${roundedDeg}°`;
+
+                verdictTitle.classList.remove("pop");
+                void verdictTitle.offsetWidth;
+                verdictTitle.classList.add("pop");
+                verdictTitle.textContent = title;
+                verdictTitle.style.color = colorVar;
+                verdictSub.textContent = subText;
+
+                pushHistory(zone);
+
+                if (navigator.vibrate) navigator.vibrate([55, 35, 70]);
 
                 scanBtn.disabled = false;
-                scanBtn.innerText = "ЗАМЕРИТЬ ЕЩЁ РАЗ";
-            }, 650);
-        }
+                scanBtn.classList.remove("loading");
+                scanBtnLabel.textContent = "Замерить ещё";
+            }
+
+            scanBtn.addEventListener("click", startAnalysis);
+
+            // Клавиатурное управление (Пробел / Enter — замер, M — звук)
+            window.addEventListener("keydown", (e) => {
+                if (e.code === "Space" || e.code === "Enter") {
+                    if (document.activeElement && document.activeElement.tagName === "A") return;
+                    if (document.activeElement && document.activeElement.closest(".seg-control, .sound-btn")) return;
+                    e.preventDefault();
+                    startAnalysis();
+                } else if (e.key && e.key.toLowerCase() === "m") {
+                    applySoundState(!isSoundOn, true);
+                }
+            });
+
+            renderNeedle(0);
+        })();
     </script>
 </body>
 </html>
-Выполняю анализ
